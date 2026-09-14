@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+cloudflared
+tunnel.log
+public_url.txt
+.job_cache.json
+.cv_profile_cache.json
+.DS_Store
+test.html

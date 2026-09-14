@@ -1,0 +1,80 @@
+# Configuração Consolidada e Otimizada do Agente de Procura de Emprego
+search_profiles:
+  - id: core_executive_roles
+    name: "Perfis Exclusivos: Consultoria Económica, CFO, Assessoria, Docência e Explicações"
+    keywords:
+      - "consultor economico"
+      - "consultoria economica"
+      - "diretor financeiro"
+      - "cfo"
+      - "head of finance"
+      - "finance director"
+      - "assessor administracao"
+      - "assessoria administracao"
+      - "board advisor"
+      - "professor economia"
+      - "explicador economia"
+      - "explicador financas"
+      - "explicador"
+
+
+filters:
+  max_days: 15
+  job_types:
+    - "Part-Time"
+    - "Full-Time"
+    - "Prestação de Serviços"
+    - "Avença"
+  allow_part_time: true
+  
+  locations:
+    must_include_any:
+      - "lisboa"
+      - "remoto"
+      - "teletrabalho"
+      - "remote"
+      - "hibrido"
+    exclude_suburbs:
+      - "sintra"
+      - "cascais"
+      - "amadora"
+      - "odivelas"
+      - "loures"
+      - "vila franca de xira"
+      - "almada"
+      - "seixal"
+      - "barreiro"
+      - "setubal"
+      - "mafra"
+      - "alverca"
+
+portals:
+  linkedin:
+    enabled: true
+  expressoemprego:
+    enabled: true
+  netempregos:
+    enabled: true
+  hays:
+    enabled: true
+  michaelpage:
+    enabled: false
+  sapoemprego:
+    enabled: false
+  itjobs:
+    enabled: false
+  alertaemprego:
+    enabled: false
+
+matching:
+  sort_by: "fit_score"
+  min_fit_score: 35
+
+notifications:
+  email:
+    enabled: true
+    recipient: "jmsmonteiro@gmail.com"
+    sender: "jmsmonteiro@gmail.com"
+    top_n: 10
+    attach_html_report: true
+

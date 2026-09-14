@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro Executivo de Oportunidades — JOSÉ MANUEL DA SILVA MONTEIRO</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); line-height: 1.5; padding-bottom: 60px; -webkit-font-smoothing: antialiased; }
+        
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0369a1 100%);
+            color: white;
+            padding: 32px 20px 24px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.15);
+        }
+        .header h1 { font-size: 1.85rem; margin-bottom: 8px; font-weight: 800; letter-spacing: -0.02em; }
+        .header p { font-size: 1rem; opacity: 0.92; max-width: 800px; margin: 0 auto; line-height: 1.4; }
+        .header .sub { font-size: 0.85rem; margin-top: 8px; opacity: 0.8; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px 16px; }
+
+        /* Agent Control Bar */
+        .agent-control-bar {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        .agent-status-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success);
+            display: inline-block;
+        }
+        .status-dot.pulsing {
+            background: var(--warning);
+            animation: pulse 1.2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.25); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+        .agent-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+        .control-select {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.88rem;
+            background: #f8fafc;
+            color: var(--text-main);
+        }
+        .btn-action {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-action:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        .btn-action:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-secondary {
+            background: #f1f5f9;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        /* Console drawer */
+        .console-drawer {
+            background: #090d16;
+            color: #38bdf8;
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            padding: 14px;
+            font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+            font-size: 0.82rem;
+            max-height: 250px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .console-line { margin-bottom: 4px; line-height: 1.4; word-break: break-all; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+        .stat-card .val { font-size: 1.7rem; font-weight: 800; color: var(--primary); }
+        .stat-card .val.green { color: var(--success); }
+        .stat-card .val.orange { color: var(--warning); }
+        .stat-card .desc { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; font-weight: 500; }
+
+        /* Hub Box */
+        .hub-box {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+        .hub-box h2 { font-size: 1.18rem; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
+        .hub-box p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px; }
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 12px;
+        }
+        .hub-card {
+            border: 1px solid var(--border);
+            padding: 12px 14px;
+            border-radius: 8px;
+            background: #f8fafc;
+            transition: all 0.2s;
+        }
+        .hub-card:hover {
+            background: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.04);
+        }
+        .hub-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        .hub-card-top strong { font-size: 0.92rem; color: #0f172a; }
+        .hub-card-top a { font-size: 0.82rem; color: var(--primary); font-weight: 700; text-decoration: none; }
+        .hub-card p { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0; }
+
+        /* Filter Controls */
+        .search-container {
+            margin-bottom: 12px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 0.95rem;
+            background: #ffffff;
+            outline: none;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            transition: border 0.2s;
+        }
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .filter-bar {
+            background: white;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+        .filter-btn {
+            padding: 7px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: #f8fafc;
+            cursor: pointer;
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: var(--text-main);
+            transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .filter-btn .count {
+            background: rgba(0,0,0,0.07);
+            padding: 1px 6px;
+            border-radius: 10px;
+            font-size: 0.76rem;
+        }
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .filter-btn.active .count {
+            background: rgba(255,255,255,0.25);
+            color: white;
+        }
+        .filter-btn:hover:not(.active) {
+            background: #e2e8f0;
+        }
+
+        /* Job Cards */
+        .job-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .job-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+        .card-category {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--primary);
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.3;
+        }
+        .card-company {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin-top: 6px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+        }
+        .score-box {
+            padding: 8px 12px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            min-width: 80px;
+            flex-shrink: 0;
+        }
+        .score-num { font-size: 1.25rem; font-weight: 800; display: block; }
+        .score-label { font-size: 0.68rem; text-transform: uppercase; opacity: 0.9; font-weight: 700; }
+
+        .badges-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+        .badge-part-time { background: #fef3c7; color: #92400e; }
+        .badge-full-time { background: #e0f2fe; color: #0369a1; }
+        .badge-remote { background: #dcfce7; color: #166534; }
+        .badge-location { background: #f1f5f9; color: #475569; }
+        .badge-date { background: #f3e8ff; color: #6b21a8; }
+
+        .card-summary { font-size: 0.94rem; color: #334155; margin-bottom: 10px; line-height: 1.5; }
+        .card-rationale { font-size: 0.88rem; color: #065f46; background: #ecfdf5; border-left: 3px solid #10b981; padding: 10px 14px; border-radius: 4px 8px 8px 4px; margin-bottom: 14px; line-height: 1.45; }
+
+        .skills-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+        .skill-tag {
+            background: #f1f5f9;
+            color: #334155;
+            font-size: 0.76rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .card-footer { display: flex; justify-content: flex-end; }
+        .btn-apply {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .btn-apply:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+        .empty-state {
+            background: white;
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Centro de Oportunidades Executivas — Portugal</h1>
+    <p>Pesquisa estruturada para <strong>JOSÉ MANUEL DA SILVA MONTEIRO</strong> • Economista Conselheiro & Membro da OCC</p>
+    <div class="sub">Áreas Exclusivas: Direção Financeira (CFO), Assessoria de Administração, Consultoria Económica, Docência & Explicações</div>
+</div>
+
+<div class="container">
+
+    <!-- Agent Control Bar -->
+    <div class="agent-control-bar">
+        <div class="agent-status-group">
+            <span class="status-dot" id="agentDot"></span>
+            <span id="agentStatusText">Agente Operacional • Última atualização: 13/09/2026 às 10:18</span>
+        </div>
+        <div class="agent-actions">
+            <select id="daysSelect" class="control-select">
+                <option value="15" selected>Últimos 15 dias</option>
+                <option value="7">Últimos 7 dias</option>
+                <option value="30">Últimos 30 dias</option>
+            </select>
+            <button id="btnRun" class="btn-action" onclick="triggerRun()">
+                <span id="btnIcon">🚀</span>
+                <span id="btnText">Atualizar Pesquisa</span>
+            </button>
+            <button class="btn-secondary" onclick="toggleConsole()">
+                📟 Ver Logs
+            </button>
+        </div>
+    </div>
+
+    <!-- Live Console Drawer -->
+    <div class="console-drawer" id="consoleDrawer">
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #334155; padding-bottom: 6px; margin-bottom: 8px;">
+            <span style="font-weight: 700; color: #ffffff;">📟 Consola de Execução em Tempo Real</span>
+            <span style="color: #94a3b8; cursor: pointer;" onclick="toggleConsole()">✕ Fechar</span>
+        </div>
+        <div id="consoleBody">Aguardando execução...</div>
+    </div>
+
+    <!-- KPI Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="val" id="kpiTotal">30</div>
+            <div class="desc">Vagas Ativas & Validadas</div>
+        </div>
+        <div class="stat-card">
+            <div class="val green" id="kpiHigh">16</div>
+            <div class="desc">Alta Afinidade (&ge; 70%)</div>
+        </div>
+        <div class="stat-card">
+            <div class="val orange" id="kpiPt">2</div>
+            <div class="desc">Ofertas em Part-Time</div>
+        </div>
+        <div class="stat-card">
+            <div class="val" style="color: #0369a1;" id="kpiPortals">3 Portais</div>
+            <div class="desc">LinkedIn, Expresso, Net-Emp.</div>
+        </div>
+    </div>
+
+    <!-- Hub de Executive Search & Assessoria de Administração -->
+    <div class="hub-box">
+        <h2>🏛️ Hub de Executive Search & Assessoria de Administração (Gestão de Topo)</h2>
+        <p>Canais e consultoras de referência para mandatos confidenciais de C-Level, Direção Financeira e Conselhos em Lisboa:</p>
+        <div class="hub-grid">
+            <div class="hub-card" style="border-color: #0284c7; background: #f0f9ff;">
+                <div class="hub-card-top">
+                    <strong style="color: #0369a1;">LinkedIn Executive Search</strong>
+                    <a href="https://www.linkedin.com/jobs/search/?keywords=CFO%20OR%20%22Diretor%20Financeiro%22%20OR%20%22Board%20Advisor%22&location=Lisbon%2C%20Portugal" target="_blank" rel="noopener noreferrer">Pesquisar &rarr;</a>
+                </div>
+                <p>Contacto direto com Headhunters para cargos C-Level e Administração em Lisboa.</p>
+            </div>
+            <div class="hub-card">
+                <div class="hub-card-top">
+                    <strong>Page Executive</strong>
+                    <a href="https://www.pageexecutive.com/" target="_blank" rel="noopener noreferrer">Aceder &rarr;</a>
+                </div>
+                <p>Divisão dedicada a C-Level, Administração e Direção Geral em Portugal.</p>
+            </div>
+            <div class="hub-card">
+                <div class="hub-card-top">
+                    <strong>Michael Page Portugal</strong>
+                    <a href="https://www.michaelpage.pt/jobs/finance-controlo-gestao/lisboa" target="_blank" rel="noopener noreferrer">Aceder &rarr;</a>
+                </div>
+                <p>Recrutamento qualificado de Direção Financeira, FP&A e Corporate Finance.</p>
+            </div>
+            <div class="hub-card">
+                <div class="hub-card-top">
+                    <strong>Stanton Chase Lisboa</strong>
+                    <a href="https://www.stantonchase.com/office/executive-search-firm-in-lisbon-portugal" target="_blank" rel="noopener noreferrer">Aceder &rarr;</a>
+                </div>
+                <p>Executive Search global para Administradores, Board e Direção-Geral.</p>
+            </div>
+            <div class="hub-card">
+                <div class="hub-card-top">
+                    <strong>Hays Executive & Finanças</strong>
+                    <a href="https://www.hays.pt/" target="_blank" rel="noopener noreferrer">Aceder &rarr;</a>
+                </div>
+                <p>Liderança executiva para Banca, Seguros, Finanças e Consultoria.</p>
+            </div>
+            <div class="hub-card">
+                <div class="hub-card-top">
+                    <strong>Robert Walters Portugal</strong>
+                    <a href="https://www.robertwalters.pt/areas-recrutamento/financas-controlo-gestao.html" target="_blank" rel="noopener noreferrer">Aceder &rarr;</a>
+                </div>
+                <p>Quadros executivos nas áreas financeira, risco e governança corporativa.</p>
+            </div>
+            <div class="hub-card">
+                <div class="hub-card-top">
+                    <strong>Boyden Portugal</strong>
+                    <a href="https://www.boyden.com/portugal/" target="_blank" rel="noopener noreferrer">Aceder &rarr;</a>
+                </div>
+                <p>Executive Search internacional de topo e Interim Management em Lisboa.</p>
+            </div>
+            <div class="hub-card">
+                <div class="hub-card-top">
+                    <strong>Amrop Portugal</strong>
+                    <a href="https://www.amrop.pt/" target="_blank" rel="noopener noreferrer">Aceder &rarr;</a>
+                </div>
+                <p>Especialistas em avaliação de Conselhos de Administração e governança.</p>
+            </div>
+            <div class="hub-card">
+                <div class="hub-card-top">
+                    <strong>GetTheJob</strong>
+                    <a href="https://www.getthejob.pt/" target="_blank" rel="noopener noreferrer">Aceder &rarr;</a>
+                </div>
+                <p>Transição de carreira, assessoria executiva e posicionamento estratégico.</p>
+            </div>
+            <div class="hub-card">
+                <div class="hub-card-top">
+                    <strong>Ordem dos Economistas</strong>
+                    <a href="https://www.ordemeconomistas.pt/" target="_blank" rel="noopener noreferrer">Aceder &rarr;</a>
+                </div>
+                <p>Bolsa de oportunidades e rede profissional de Economistas Conselheiros.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Search -->
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Filtrar vagas por cargo, empresa, portal ou competência em tempo real..." oninput="applyFilters()">
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="filter-bar">
+        <span style="font-weight: 700; font-size: 0.88rem; margin-right: 4px; color: var(--text-muted);">Portais:</span>
+        <button class="filter-btn active" data-filter-type="portal" data-filter-val="all" onclick="setFilter(this)">Todas <span class="count">30</span></button>
+        <button class="filter-btn" data-filter-type="portal" data-filter-val="linkedin" onclick="setFilter(this)">🔵 LinkedIn <span class="count">19</span></button>
+        <button class="filter-btn" data-filter-type="portal" data-filter-val="expresso" onclick="setFilter(this)">🔴 Expresso Emprego <span class="count">2</span></button>
+        <button class="filter-btn" data-filter-type="portal" data-filter-val="netempregos" onclick="setFilter(this)">🟢 Net-Empregos <span class="count">9</span></button>
+
+        <span style="font-weight: 700; font-size: 0.88rem; margin-left: 8px; margin-right: 4px; color: var(--text-muted);">Áreas:</span>
+        <button class="filter-btn" data-filter-type="cat" data-filter-val="cfo" onclick="setFilter(this)">💼 CFO / Dir. Financeira <span class="count">24</span></button>
+        <button class="filter-btn" data-filter-type="cat" data-filter-val="admin" onclick="setFilter(this)">🏛️ Assessoria Admin <span class="count">1</span></button>
+        <button class="filter-btn" data-filter-type="cat" data-filter-val="consulting" onclick="setFilter(this)">📈 Consultoria <span class="count">1</span></button>
+        <button class="filter-btn" data-filter-type="cat" data-filter-val="teaching" onclick="setFilter(this)">🎓 Ensino / Explicações <span class="count">4</span></button>
+
+        <span style="font-weight: 700; font-size: 0.88rem; margin-left: 8px; margin-right: 4px; color: var(--text-muted);">Critérios:</span>
+        <button class="filter-btn" data-filter-type="spec" data-filter-val="banking" onclick="setFilter(this)">🏦 Bancos & Finanças <span class="count">11</span></button>
+        <button class="filter-btn" data-filter-type="spec" data-filter-val="high" onclick="setFilter(this)">⭐ Score &ge; 70% <span class="count">16</span></button>
+        <button class="filter-btn" data-filter-type="spec" data-filter-val="pt" onclick="setFilter(this)">⏱️ Part-Time <span class="count">2</span></button>
+    </div>
+
+    <!-- Job Offer Cards List (ZERO IFRAMES) -->
+    <div id="jobList">
+        
+            <div class="job-card" data-category="teaching" data-portal="netempregos" data-parttime="true" data-remote="false" data-banking="false" data-score="98.0" data-search="explicadores de ensino superior economia, finanças, gestão e contabilidade confidencial / não especificada explicador de economia e finanças net-empregos economista conselheiro (ordem dos economistas) & consultoria docência / explicações em economia e finanças com ccp">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Explicador de Economia e Finanças</div>
+                        <h3 class="card-title">Explicadores de Ensino Superior Economia, Finanças, Gestão e Contabilidade</h3>
+                        <div class="card-company">🏢 <strong>Confidencial / Não especificada</strong> • 📍 Lisboa • <span class="badge" style="background: #dcfce7; color: #15803d; font-weight: 700;">🟢 Net-Empregos</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">98%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-part-time">⏱️ Part-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 8 dia(s) (05/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Explicadores de Ensino Superior Economia, Finanças, Gestão e Contabilidade na empresa Confidencial / Não especificada. Regime: Part-Time | Presencial (Lisboa). Foco na área de Explicador de Economia e Finanças. Anúncio publicado há 7 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Economista Conselheiro (Ordem dos Economistas) & Consultoria, Docência / Explicações em Economia e Finanças com CCP.</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Economista Conselheiro (Ordem dos Economistas) & Consultoria</span><span class="skill-tag">Docência / Explicações em Economia e Finanças com CCP</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://www.net-empregos.com/15902820/explicadores-de-ensino-superior-economia-financas-gestao-e-contabilidade/" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no Net-Empregos &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="teaching" data-portal="netempregos" data-parttime="true" data-remote="false" data-banking="false" data-score="98.0" data-search="professor / explicador - economia confidencial / não especificada professor de economia net-empregos economista conselheiro (ordem dos economistas) & consultoria docência / explicações em economia e finanças com ccp">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Professor de Economia</div>
+                        <h3 class="card-title">Professor / Explicador - Economia</h3>
+                        <div class="card-company">🏢 <strong>Confidencial / Não especificada</strong> • 📍 Lisboa • <span class="badge" style="background: #dcfce7; color: #15803d; font-weight: 700;">🟢 Net-Empregos</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">98%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-part-time">⏱️ Part-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 7 dia(s) (06/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Professor / Explicador - Economia na empresa Confidencial / Não especificada. Regime: Part-Time | Presencial (Lisboa). Foco na área de Professor de Economia. Anúncio publicado há 6 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Economista Conselheiro (Ordem dos Economistas) & Consultoria, Docência / Explicações em Economia e Finanças com CCP.</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Economista Conselheiro (Ordem dos Economistas) & Consultoria</span><span class="skill-tag">Docência / Explicações em Economia e Finanças com CCP</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://www.net-empregos.com/15907083/professor-explicador-economia/" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no Net-Empregos &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="netempregos" data-parttime="false" data-remote="false" data-banking="false" data-score="97.0" data-search="finance manager emea (m/f) confidencial / não especificada direção financeira (cfo) net-empregos economista conselheiro (ordem dos economistas) & consultoria liderança e direção financeira executiva (cfo)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Finance Manager EMEA (m/f)</h3>
+                        <div class="card-company">🏢 <strong>Confidencial / Não especificada</strong> • 📍 Lisboa • <span class="badge" style="background: #dcfce7; color: #15803d; font-weight: 700;">🟢 Net-Empregos</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">97%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 3 dia(s) (10/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Finance Manager EMEA (m/f) na empresa Confidencial / Não especificada. Regime: Full-Time | Presencial (Lisboa). Foco na área de Direção Financeira (CFO). Anúncio publicado há 2 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Economista Conselheiro (Ordem dos Economistas) & Consultoria, Liderança e Direção Financeira Executiva (CFO).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Economista Conselheiro (Ordem dos Economistas) & Consultoria</span><span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://www.net-empregos.com/15972372/finance-manager-emea-m-f/" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no Net-Empregos &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="teaching" data-portal="netempregos" data-parttime="false" data-remote="false" data-banking="false" data-score="95.0" data-search="professor (m/f) economia confidencial / não especificada professor de economia net-empregos economista conselheiro (ordem dos economistas) & consultoria docência / explicações em economia e finanças com ccp">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Professor de Economia</div>
+                        <h3 class="card-title">Professor (m/f) Economia</h3>
+                        <div class="card-company">🏢 <strong>Confidencial / Não especificada</strong> • 📍 Lisboa • <span class="badge" style="background: #dcfce7; color: #15803d; font-weight: 700;">🟢 Net-Empregos</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">95%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 0 dia(s) (13/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Professor (m/f) Economia na empresa Confidencial / Não especificada. Regime: Full-Time | Presencial (Lisboa). Foco na área de Professor de Economia. Anúncio publicado há 4 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Economista Conselheiro (Ordem dos Economistas) & Consultoria, Docência / Explicações em Economia e Finanças com CCP.</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Economista Conselheiro (Ordem dos Economistas) & Consultoria</span><span class="skill-tag">Docência / Explicações em Economia e Finanças com CCP</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://www.net-empregos.com/15961471/professor-m-f-economia/" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no Net-Empregos &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="teaching" data-portal="netempregos" data-parttime="false" data-remote="false" data-banking="false" data-score="95.0" data-search="professor/a economia confidencial / não especificada professor de economia net-empregos economista conselheiro (ordem dos economistas) & consultoria docência / explicações em economia e finanças com ccp">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Professor de Economia</div>
+                        <h3 class="card-title">Professor/a Economia</h3>
+                        <div class="card-company">🏢 <strong>Confidencial / Não especificada</strong> • 📍 Lisboa • <span class="badge" style="background: #dcfce7; color: #15803d; font-weight: 700;">🟢 Net-Empregos</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">95%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 0 dia(s) (13/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Professor/a Economia na empresa Confidencial / Não especificada. Regime: Full-Time | Presencial (Lisboa). Foco na área de Professor de Economia. Anúncio publicado há 4 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Economista Conselheiro (Ordem dos Economistas) & Consultoria, Docência / Explicações em Economia e Finanças com CCP.</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Economista Conselheiro (Ordem dos Economistas) & Consultoria</span><span class="skill-tag">Docência / Explicações em Economia e Finanças com CCP</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://www.net-empregos.com/15961874/professor-a-economia/" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no Net-Empregos &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="true" data-score="87.0" data-search="senior financial controller - local finance bnp paribas cib direção financeira (cfo) linkedin jobs liderança e direção financeira executiva (cfo) nível executivo / sénior (25+ anos)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Senior Financial Controller - Local Finance</h3>
+                        <div class="card-company">🏢 <strong>BNP Paribas CIB</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">87%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    <span class="badge" style="background: #fef9c3; color: #854d0e; font-weight: 700;">🏦 Setor Bancário</span>
+                    <span class="badge badge-date">📅 Há 6 dia(s) (07/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Senior Financial Controller - Local Finance na empresa BNP Paribas CIB. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 5 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO), Nível Executivo / Sénior (25+ anos).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span><span class="skill-tag">Nível Executivo / Sénior (25+ anos)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/senior-financial-controller-local-finance-at-bnp-paribas-cib-4455256401" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="netempregos" data-parttime="false" data-remote="false" data-banking="false" data-score="87.0" data-search="diretor financeiro / head of finance confidencial / não especificada direção financeira (cfo) net-empregos liderança e direção financeira executiva (cfo) nível executivo / sénior (25+ anos)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Diretor Financeiro / Head of Finance</h3>
+                        <div class="card-company">🏢 <strong>Confidencial / Não especificada</strong> • 📍 Lisboa • <span class="badge" style="background: #dcfce7; color: #15803d; font-weight: 700;">🟢 Net-Empregos</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">87%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 4 dia(s) (09/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Diretor Financeiro / Head of Finance na empresa Confidencial / Não especificada. Regime: Full-Time | Presencial (Lisboa). Foco na área de Direção Financeira (CFO). Anúncio publicado há 3 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO), Nível Executivo / Sénior (25+ anos).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span><span class="skill-tag">Nível Executivo / Sénior (25+ anos)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://www.net-empregos.com/15914765/diretor-financeiro-head-of-finance/" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no Net-Empregos &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="netempregos" data-parttime="false" data-remote="false" data-banking="false" data-score="87.0" data-search="diretor/a financeiro/a - cfo (funções presenciais) confidencial / não especificada direção financeira (cfo) net-empregos liderança e direção financeira executiva (cfo) nível executivo / sénior (25+ anos)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Diretor/a Financeiro/a - CFO (funções presenciais)</h3>
+                        <div class="card-company">🏢 <strong>Confidencial / Não especificada</strong> • 📍 Lisboa • <span class="badge" style="background: #dcfce7; color: #15803d; font-weight: 700;">🟢 Net-Empregos</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">87%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 1 dia(s) (12/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Diretor/a Financeiro/a - CFO (funções presenciais) na empresa Confidencial / Não especificada. Regime: Full-Time | Presencial (Lisboa). Foco na área de Direção Financeira (CFO). Anúncio publicado há 1 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO), Nível Executivo / Sénior (25+ anos).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span><span class="skill-tag">Nível Executivo / Sénior (25+ anos)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://www.net-empregos.com/15678806/diretor-a-financeiro-a-cfo-funcoes-presenciais/" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no Net-Empregos &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="admin" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="85.0" data-search="senior consultant  valuation & advisory cushman & wakefield assessoria de administração linkedin jobs economista conselheiro (ordem dos economistas) & consultoria nível executivo / sénior (25+ anos)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Assessoria de Administração</div>
+                        <h3 class="card-title">Senior Consultant  Valuation & Advisory</h3>
+                        <div class="card-company">🏢 <strong>Cushman & Wakefield</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">85%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 10 dia(s) (03/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Senior Consultant  Valuation & Advisory na empresa Cushman & Wakefield. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Assessoria de Administração. Anúncio publicado há 9 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Economista Conselheiro (Ordem dos Economistas) & Consultoria, Nível Executivo / Sénior (25+ anos).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Economista Conselheiro (Ordem dos Economistas) & Consultoria</span><span class="skill-tag">Nível Executivo / Sénior (25+ anos)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/senior-consultant-valuation-advisory-at-cushman-wakefield-4425662569" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="77.0" data-search="finance manager - product analytics and insights (x2) amgen direção financeira (cfo) linkedin jobs liderança e direção financeira executiva (cfo)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Finance Manager - Product Analytics and Insights (x2)</h3>
+                        <div class="card-company">🏢 <strong>Amgen</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">77%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 11 dia(s) (02/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Finance Manager - Product Analytics and Insights (x2) na empresa Amgen. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 10 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/finance-manager-product-analytics-and-insights-x2-at-amgen-4453139415" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="77.0" data-search="financial controller air apps direção financeira (cfo) linkedin jobs liderança e direção financeira executiva (cfo)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Financial Controller</h3>
+                        <div class="card-company">🏢 <strong>Air Apps</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">77%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 3 dia(s) (10/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Financial Controller na empresa Air Apps. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 2 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/financial-controller-at-air-apps-4463431904" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="77.0" data-search="fp&a director - maternity cover team.blue direção financeira (cfo) linkedin jobs liderança e direção financeira executiva (cfo)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">FP&A Director - Maternity Cover</h3>
+                        <div class="card-company">🏢 <strong>team.blue</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">77%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 11 dia(s) (02/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para FP&A Director - Maternity Cover na empresa team.blue. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 10 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/fp-a-director-maternity-cover-at-team-blue-4462412817" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="true" data-score="77.0" data-search="controller financeiro | controlo de gestão e governação de fornecedores santander portugal direção financeira (cfo) linkedin jobs liderança e direção financeira executiva (cfo)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Controller Financeiro | Controlo de Gestão e Governação de Fornecedores</h3>
+                        <div class="card-company">🏢 <strong>Santander Portugal</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">77%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    <span class="badge" style="background: #fef9c3; color: #854d0e; font-weight: 700;">🏦 Setor Bancário</span>
+                    <span class="badge badge-date">📅 Há 2 dia(s) (11/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Controller Financeiro | Controlo de Gestão e Governação de Fornecedores na empresa Santander Portugal. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 1 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/controller-financeiro-controlo-de-gest%C3%A3o-e-governa%C3%A7%C3%A3o-de-fornecedores-at-santander-portugal-4446525068" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="expresso" data-parttime="false" data-remote="false" data-banking="false" data-score="77.0" data-search="group fp&a expert michael page portugal direção financeira (cfo) expresso emprego liderança e direção financeira executiva (cfo)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Group Fp&a Expert</h3>
+                        <div class="card-company">🏢 <strong>Michael Page Portugal</strong> • 📍 Lisboa • <span class="badge" style="background: #fee2e2; color: #b91c1c; font-weight: 700;">🔴 Expresso Emprego</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">77%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 4 dia(s) (09/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Group Fp&a Expert na empresa Michael Page Portugal. Regime: Full-Time | Presencial (Lisboa). Foco na área de Direção Financeira (CFO). Anúncio publicado há 3 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://expressoemprego.pt/emprego/group-fp-a-expert/lisboa/2466275" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no Expresso Emprego &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="netempregos" data-parttime="false" data-remote="false" data-banking="false" data-score="77.0" data-search="finance director | ifrs | consolidation confidencial / não especificada direção financeira (cfo) net-empregos liderança e direção financeira executiva (cfo)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Finance Director | IFRS | Consolidation</h3>
+                        <div class="card-company">🏢 <strong>Confidencial / Não especificada</strong> • 📍 Lisboa • <span class="badge" style="background: #dcfce7; color: #15803d; font-weight: 700;">🟢 Net-Empregos</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">77%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 3 dia(s) (10/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Finance Director | IFRS | Consolidation na empresa Confidencial / Não especificada. Regime: Full-Time | Presencial (Lisboa). Foco na área de Direção Financeira (CFO). Anúncio publicado há 2 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://www.net-empregos.com/15970607/finance-director-ifrs-consolidation/" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no Net-Empregos &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="netempregos" data-parttime="false" data-remote="false" data-banking="false" data-score="77.0" data-search="finance director | ifrs | consolidation confidencial / não especificada direção financeira (cfo) net-empregos liderança e direção financeira executiva (cfo)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Finance Director | IFRS | Consolidation</h3>
+                        <div class="card-company">🏢 <strong>Confidencial / Não especificada</strong> • 📍 Lisboa • <span class="badge" style="background: #dcfce7; color: #15803d; font-weight: 700;">🟢 Net-Empregos</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">77%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 4 dia(s) (09/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Finance Director | IFRS | Consolidation na empresa Confidencial / Não especificada. Regime: Full-Time | Presencial (Lisboa). Foco na área de Direção Financeira (CFO). Anúncio publicado há 3 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://www.net-empregos.com/15969173/finance-director-ifrs-consolidation/" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no Net-Empregos &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="true" data-score="65.0" data-search="securities services consulting - senior consultant bnp paribas direção financeira (cfo) linkedin jobs nível executivo / sénior (25+ anos)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Securities Services Consulting - Senior Consultant</h3>
+                        <div class="card-company">🏢 <strong>BNP Paribas</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #f59e0b;">
+                        <span class="score-num">65%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    <span class="badge" style="background: #fef9c3; color: #854d0e; font-weight: 700;">🏦 Setor Bancário</span>
+                    <span class="badge badge-date">📅 Há 4 dia(s) (09/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Securities Services Consulting - Senior Consultant na empresa BNP Paribas. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 3 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Nível Executivo / Sénior (25+ anos).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Nível Executivo / Sénior (25+ anos)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/securities-services-consulting-senior-consultant-at-bnp-paribas-4388570881" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="true" data-score="65.0" data-search="manager & senior consultant - real estate capital markets deloitte direção financeira (cfo) linkedin jobs nível executivo / sénior (25+ anos)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Manager & Senior Consultant - Real Estate Capital Markets</h3>
+                        <div class="card-company">🏢 <strong>Deloitte</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #f59e0b;">
+                        <span class="score-num">65%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    <span class="badge" style="background: #fef9c3; color: #854d0e; font-weight: 700;">🏦 Setor Bancário</span>
+                    <span class="badge badge-date">📅 Há 2 dia(s) (11/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Manager & Senior Consultant - Real Estate Capital Markets na empresa Deloitte. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 1 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Nível Executivo / Sénior (25+ anos).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Nível Executivo / Sénior (25+ anos)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/manager-senior-consultant-real-estate-capital-markets-at-deloitte-4447287939" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="true" data-score="65.0" data-search="consulting & transformation senior business manager bnp paribas cib direção financeira (cfo) linkedin jobs nível executivo / sénior (25+ anos)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Consulting & Transformation Senior Business Manager</h3>
+                        <div class="card-company">🏢 <strong>BNP Paribas CIB</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #f59e0b;">
+                        <span class="score-num">65%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    <span class="badge" style="background: #fef9c3; color: #854d0e; font-weight: 700;">🏦 Setor Bancário</span>
+                    <span class="badge badge-date">📅 Há 7 dia(s) (06/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Consulting & Transformation Senior Business Manager na empresa BNP Paribas CIB. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 6 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Nível Executivo / Sénior (25+ anos).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Nível Executivo / Sénior (25+ anos)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/consulting-transformation-senior-business-manager-at-bnp-paribas-cib-4436767068" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="true" data-score="65.0" data-search="capital market p&l reconciliation - senior controller bnp paribas cib direção financeira (cfo) linkedin jobs nível executivo / sénior (25+ anos)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Capital Market P&L Reconciliation - Senior Controller</h3>
+                        <div class="card-company">🏢 <strong>BNP Paribas CIB</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #f59e0b;">
+                        <span class="score-num">65%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    <span class="badge" style="background: #fef9c3; color: #854d0e; font-weight: 700;">🏦 Setor Bancário</span>
+                    <span class="badge badge-date">📅 Há 5 dia(s) (08/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Capital Market P&L Reconciliation - Senior Controller na empresa BNP Paribas CIB. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 4 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Nível Executivo / Sénior (25+ anos).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Nível Executivo / Sénior (25+ anos)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/capital-market-p-l-reconciliation-senior-controller-at-bnp-paribas-cib-4464901223" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="consulting" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="65.0" data-search="transaction services consultant & senior consultant lisbon/porto pwc portugal consultoria económica linkedin jobs nível executivo / sénior (25+ anos)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Consultoria Económica</div>
+                        <h3 class="card-title">Transaction Services Consultant & Senior Consultant Lisbon/Porto</h3>
+                        <div class="card-company">🏢 <strong>PwC Portugal</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #f59e0b;">
+                        <span class="score-num">65%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 15 dia(s) (29/08/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Transaction Services Consultant & Senior Consultant Lisbon/Porto na empresa PwC Portugal. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Consultoria Económica. Anúncio publicado há 14 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Nível Executivo / Sénior (25+ anos).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Nível Executivo / Sénior (25+ anos)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/transaction-services-consultant-senior-consultant-lisbon-porto-at-pwc-portugal-4090639540" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="expresso" data-parttime="false" data-remote="false" data-banking="false" data-score="65.0" data-search="responsável de corporate finance adecco recruitment direção financeira (cfo) expresso emprego nível executivo / sénior (25+ anos)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Responsável de Corporate Finance</h3>
+                        <div class="card-company">🏢 <strong>Adecco Recruitment</strong> • 📍 Lisboa • <span class="badge" style="background: #fee2e2; color: #b91c1c; font-weight: 700;">🔴 Expresso Emprego</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #f59e0b;">
+                        <span class="score-num">65%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 1 dia(s) (12/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Responsável de Corporate Finance na empresa Adecco Recruitment. Regime: Full-Time | Presencial (Lisboa). Foco na área de Direção Financeira (CFO). Anúncio publicado há 0 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Nível Executivo / Sénior (25+ anos).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Nível Executivo / Sénior (25+ anos)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://expressoemprego.pt/emprego/responsavel-de-corporate-finance/lisboa--portugal/2467178" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no Expresso Emprego &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="true" data-score="55.0" data-search="business analyst for credit risk stress testing axians portugal direção financeira (cfo) linkedin jobs ">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Business Analyst for Credit Risk Stress Testing</h3>
+                        <div class="card-company">🏢 <strong>Axians Portugal</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #f59e0b;">
+                        <span class="score-num">55%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    <span class="badge" style="background: #fef9c3; color: #854d0e; font-weight: 700;">🏦 Setor Bancário</span>
+                    <span class="badge badge-date">📅 Há 5 dia(s) (08/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Business Analyst for Credit Risk Stress Testing na empresa Axians Portugal. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 4 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Gestão e liderança executiva.</em>
+                </div>
+
+                <div class="skills-row">
+                    
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/business-analyst-for-credit-risk-stress-testing-at-axians-portugal-4462996825" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="55.0" data-search="global health economics & outcomes research lead (m/f/d) grünenthal group direção financeira (cfo) linkedin jobs ">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Global Health Economics & Outcomes Research Lead (m/f/d)</h3>
+                        <div class="card-company">🏢 <strong>Grünenthal Group</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #f59e0b;">
+                        <span class="score-num">55%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 13 dia(s) (31/08/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Global Health Economics & Outcomes Research Lead (m/f/d) na empresa Grünenthal Group. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 12 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Gestão e liderança executiva.</em>
+                </div>
+
+                <div class="skills-row">
+                    
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/global-health-economics-outcomes-research-lead-m-f-d-at-gr%C3%BCnenthal-group-4461275244" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="true" data-score="55.0" data-search="investment banking business researcher bnp paribas cib direção financeira (cfo) linkedin jobs ">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Investment Banking Business Researcher</h3>
+                        <div class="card-company">🏢 <strong>BNP Paribas CIB</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #f59e0b;">
+                        <span class="score-num">55%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    <span class="badge" style="background: #fef9c3; color: #854d0e; font-weight: 700;">🏦 Setor Bancário</span>
+                    <span class="badge badge-date">📅 Há 2 dia(s) (11/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Investment Banking Business Researcher na empresa BNP Paribas CIB. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 1 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Gestão e liderança executiva.</em>
+                </div>
+
+                <div class="skills-row">
+                    
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/investment-banking-business-researcher-at-bnp-paribas-cib-4418972177" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="55.0" data-search="risk & regulation consultant pwc portugal direção financeira (cfo) linkedin jobs ">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Risk & Regulation Consultant</h3>
+                        <div class="card-company">🏢 <strong>PwC Portugal</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #f59e0b;">
+                        <span class="score-num">55%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 12 dia(s) (01/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Risk & Regulation Consultant na empresa PwC Portugal. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 11 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Gestão e liderança executiva.</em>
+                </div>
+
+                <div class="skills-row">
+                    
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/risk-regulation-consultant-at-pwc-portugal-4244204924" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="true" data-score="55.0" data-search="consulting & transformation 2s consultant bnp paribas cib direção financeira (cfo) linkedin jobs ">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Consulting & Transformation 2S Consultant</h3>
+                        <div class="card-company">🏢 <strong>BNP Paribas CIB</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #f59e0b;">
+                        <span class="score-num">55%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    <span class="badge" style="background: #fef9c3; color: #854d0e; font-weight: 700;">🏦 Setor Bancário</span>
+                    <span class="badge badge-date">📅 Há 15 dia(s) (29/08/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Consulting & Transformation 2S Consultant na empresa BNP Paribas CIB. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 14 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Gestão e liderança executiva.</em>
+                </div>
+
+                <div class="skills-row">
+                    
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/consulting-transformation-2s-consultant-at-bnp-paribas-cib-4450788121" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="true" data-score="55.0" data-search="financial control officer (french speaker) | sg natixis in portugal direção financeira (cfo) linkedin jobs ">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Financial Control Officer (French Speaker) | SG</h3>
+                        <div class="card-company">🏢 <strong>Natixis in Portugal</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #f59e0b;">
+                        <span class="score-num">55%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    <span class="badge" style="background: #fef9c3; color: #854d0e; font-weight: 700;">🏦 Setor Bancário</span>
+                    <span class="badge badge-date">📅 Há 3 dia(s) (10/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Financial Control Officer (French Speaker) | SG na empresa Natixis in Portugal. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 2 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Gestão e liderança executiva.</em>
+                </div>
+
+                <div class="skills-row">
+                    
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/financial-control-officer-french-speaker-sg-at-natixis-in-portugal-4433970546" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="55.0" data-search="capital management & reporting consultant pwc portugal direção financeira (cfo) linkedin jobs ">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Capital Management & Reporting Consultant</h3>
+                        <div class="card-company">🏢 <strong>PwC Portugal</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #f59e0b;">
+                        <span class="score-num">55%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 6 dia(s) (07/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Capital Management & Reporting Consultant na empresa PwC Portugal. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 5 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Gestão e liderança executiva.</em>
+                </div>
+
+                <div class="skills-row">
+                    
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/capital-management-reporting-consultant-at-pwc-portugal-4297548221" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="true" data-score="55.0" data-search="business analyst for credit risk stress testing bnp paribas cib direção financeira (cfo) linkedin jobs ">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Business Analyst for Credit Risk Stress Testing</h3>
+                        <div class="card-company">🏢 <strong>BNP Paribas CIB</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #f59e0b;">
+                        <span class="score-num">55%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    <span class="badge" style="background: #fef9c3; color: #854d0e; font-weight: 700;">🏦 Setor Bancário</span>
+                    <span class="badge badge-date">📅 Há 10 dia(s) (03/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Business Analyst for Credit Risk Stress Testing na empresa BNP Paribas CIB. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 10 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Gestão e liderança executiva.</em>
+                </div>
+
+                <div class="skills-row">
+                    
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/business-analyst-for-credit-risk-stress-testing-at-bnp-paribas-cib-4443940315" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+    </div>
+
+    <div id="emptyState" class="empty-state">
+        <h3>Nenhuma vaga corresponde aos filtros selecionados.</h3>
+        <p style="margin-top: 6px;">Tente limpar a pesquisa de texto ou selecionar "Todas".</p>
+    </div>
+</div>
+
+<script>
+let currentFilterType = 'portal';
+let currentFilterVal = 'all';
+let isRunning = false;
+
+function setFilter(btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilterType = btn.getAttribute('data-filter-type');
+    currentFilterVal = btn.getAttribute('data-filter-val');
+    applyFilters();
+}
+
+function applyFilters() {
+    const query = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+    const cards = document.querySelectorAll('.job-card');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+        const portal = card.getAttribute('data-portal');
+        const category = card.getAttribute('data-category');
+        const isPt = card.getAttribute('data-parttime') === 'true';
+        const isBanking = card.getAttribute('data-banking') === 'true';
+        const score = parseFloat(card.getAttribute('data-score')) || 0;
+        const searchBlob = card.getAttribute('data-search') || '';
+
+        // Critério do botão
+        let matchesFilter = false;
+        if (currentFilterType === 'portal') {
+            matchesFilter = (currentFilterVal === 'all') || (portal === currentFilterVal);
+        } else if (currentFilterType === 'cat') {
+            matchesFilter = (category === currentFilterVal);
+        } else if (currentFilterType === 'spec') {
+            if (currentFilterVal === 'high') matchesFilter = (score >= 70);
+            if (currentFilterVal === 'pt') matchesFilter = isPt;
+            if (currentFilterVal === 'banking') matchesFilter = isBanking;
+        }
+
+        // Critério de pesquisa de texto
+        let matchesSearch = true;
+        if (query.length > 0) {
+            matchesSearch = searchBlob.includes(query);
+        }
+
+        if (matchesFilter && matchesSearch) {
+            card.style.display = 'block';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    const empty = document.getElementById('emptyState');
+    if (empty) {
+        empty.style.display = (visibleCount === 0) ? 'block' : 'none';
+    }
+}
+
+function toggleConsole() {
+    const el = document.getElementById('consoleDrawer');
+    if (el) {
+        el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'block' : 'none';
+    }
+}
+
+// Polling e controlo do agente com a API local
+async function pollAgentStatus() {
+    try {
+        const res = await fetch('/api/status');
+        if (!res.ok) return;
+        const data = await res.json();
+
+        const dot = document.getElementById('agentDot');
+        const statusText = document.getElementById('agentStatusText');
+        const btnRun = document.getElementById('btnRun');
+        const btnText = document.getElementById('btnText');
+        const btnIcon = document.getElementById('btnIcon');
+
+        if (data.is_running) {
+            isRunning = true;
+            if (dot) dot.className = 'status-dot pulsing';
+            if (statusText) statusText.textContent = 'Agente a Pesquisar Portais em Tempo Real...';
+            if (btnRun) btnRun.disabled = true;
+            if (btnText) btnText.textContent = 'A Pesquisar...';
+            if (btnIcon) btnIcon.textContent = '⏳';
+        } else {
+            if (isRunning) {
+                // Terminou a execução agora
+                isRunning = false;
+                window.location.reload();
+            }
+            if (dot) dot.className = 'status-dot';
+            if (statusText) statusText.textContent = data.last_run ? ('Agente Operacional • Atualizado em ' + data.last_run) : 'Agente Operacional';
+            if (btnRun) btnRun.disabled = false;
+            if (btnText) btnText.textContent = 'Atualizar Pesquisa';
+            if (btnIcon) btnIcon.textContent = '🚀';
+        }
+
+        if (data.logs && data.logs.length > 0) {
+            const consoleBody = document.getElementById('consoleBody');
+            if (consoleBody) {
+                consoleBody.innerHTML = data.logs.map(l => `<div class="console-line">${l}</div>`).join('');
+                consoleBody.scrollTop = consoleBody.scrollHeight;
+            }
+        }
+
+    } catch (e) {
+        // Modo offline ou sem servidor local
+    }
+}
+
+async function triggerRun() {
+    const days = document.getElementById('daysSelect').value;
+    const btnRun = document.getElementById('btnRun');
+    if (btnRun) btnRun.disabled = true;
+
+    // Abrir consola para feedback imediato
+    const consoleDrawer = document.getElementById('consoleDrawer');
+    if (consoleDrawer) consoleDrawer.style.display = 'block';
+
+    try {
+        const res = await fetch('/api/run', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ days: parseInt(days), send_email: true })
+        });
+        const data = await res.json();
+        pollAgentStatus();
+    } catch (err) {
+        alert('Erro ao comunicar com o agente: ' + err);
+        if (btnRun) btnRun.disabled = false;
+    }
+}
+
+// Iniciar polling a cada 2.5s
+setInterval(pollAgentStatus, 2500);
+pollAgentStatus();
+</script>
+
+</body>
+</html>
