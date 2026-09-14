@@ -172,6 +172,7 @@ class AgentWebHandler(BaseHTTPRequestHandler):
             self.send_header('Content-Length', str(len(compressed)))
             self.end_headers()
             self.wfile.write(compressed)
+            self.wfile.flush()
         else:
             self.send_response(status)
             self.send_header('Content-Type', content_type)
@@ -182,6 +183,7 @@ class AgentWebHandler(BaseHTTPRequestHandler):
             self.send_header('Content-Length', str(len(data)))
             self.end_headers()
             self.wfile.write(data)
+            self.wfile.flush()
 
     def do_HEAD(self):
         parsed_path = self.path.split('?')[0]
@@ -266,10 +268,13 @@ class AgentWebHandler(BaseHTTPRequestHandler):
 
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
+            self.send_header('Connection', 'close')
             self.end_headers()
             self.wfile.write(json.dumps({"status": "started"}).encode('utf-8'))
+            self.wfile.flush()
         else:
             self.send_response(404)
+            self.send_header('Connection', 'close')
             self.end_headers()
 
 def main():
