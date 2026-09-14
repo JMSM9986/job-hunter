@@ -1,9 +1,11 @@
 services:
   - type: web
-    name: job-hunter-agent
+    name: agente-emprego-executivo
     runtime: python
+    plan: free
+    region: frankfurt
     buildCommand: pip install -r requirements.txt
     startCommand: python3 server.py
     envVars:
-      - key: PORT
-        value: 5050
+      - key: PYTHON_VERSION
+        value: 3.11.0
