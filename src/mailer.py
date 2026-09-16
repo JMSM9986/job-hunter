@@ -286,6 +286,42 @@ class JobEmailNotifier:
             console.print(f"[red]❌ Erro ao enviar por Apple Mail: {e}[/red]")
             return False
 
+    def send_via_resend(self, subject: str, text_content: str, html_content: str, attachment_path: Optional[str] = None) -> bool:
+        """Envia e-mail via API REST da Resend (HTTPS porta 443, 100% compatível com Render Free Tier)."""
+        resend_key = os.environ.get("RESEND_API_KEY")
+        if not resend_key:
+            return False
+        try:
+            import base64
+            import requests
+            headers = {
+                "Authorization": f"Bearer {resend_key.strip()}",
+                "Content-Type": "application/json"
+            }
+            payload = {
+                "from": "Agente Emprego <onboarding@resend.dev>",
+                "to": [self.recipient],
+                "subject": subject,
+                "html": html_content,
+                "text": text_content
+            }
+            if attachment_path and Path(attachment_path).exists():
+                data_b64 = base64.b64encode(Path(attachment_path).read_bytes()).decode('utf-8')
+                payload["attachments"] = [{
+                    "filename": Path(attachment_path).name,
+                    "content": data_b64
+                }]
+            resp = requests.post("https://api.resend.com/emails", json=payload, headers=headers, timeout=10.0)
+            if resp.status_code in [200, 201]:
+                console.print(f"📧 [bold green]E-mail enviado com sucesso via Resend API (HTTPS 443) para {self.recipient}![/bold green]")
+                return True
+            else:
+                console.print(f"[yellow]⚠️ Resend API devolveu código {resp.status_code}: {resp.text}[/yellow]")
+                return False
+        except Exception as e:
+            console.print(f"[yellow]⚠️ Erro na API Resend: {e}[/yellow]")
+            return False
+
     def send_via_smtp(self, subject: str, text_content: str, html_content: str, attachment_path: Optional[str] = None) -> bool:
         """Envia e-mail via servidor SMTP (ex: Gmail SMTP com App Password)."""
         try:
@@ -308,7 +344,8 @@ class JobEmailNotifier:
                     part["Content-Disposition"] = f'attachment; filename="{Path(attachment_path).name}"'
                     msg.attach(part)
 
-            with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
+            # Timeout estrito de 5.0s para evitar congelamento em clouds que bloqueiam portas SMTP
+            with smtplib.SMTP(self.smtp_host, self.smtp_port, timeout=5.0) as server:
                 server.starttls()
                 server.login(self.smtp_user, self.smtp_password)
                 server.sendmail(self.sender, [self.recipient], msg.as_string())
@@ -322,7 +359,9 @@ class JobEmailNotifier:
     def send_daily_digest(self, profile: CVProfile, offers: List[JobOffer], html_report_path: Optional[str] = None, top_n: int = 10) -> bool:
         """
         Ponto de entrada principal para envio da notificação diária.
-        Tenta SMTP se configurado; caso contrário, utiliza Apple Mail nativo do macOS.
+        1. Resend API (HTTPS porta 443 - garantido na cloud)
+        2. SMTP seguro (se as portas não forem bloqueadas pelo provedor cloud)
+        3. Apple Mail nativo (se estiver em macOS local)
         """
         now_date_str = datetime.now(LISBON_TZ).strftime("%d/%m/%Y")
         subject = f"🎯 Resumo Diário de Vagas Executivas (Lisboa & Remoto) - {profile.name} - {now_date_str}"
@@ -334,20 +373,27 @@ class JobEmailNotifier:
         Path("email_digest_latest.html").write_text(html_body, encoding="utf-8")
         Path("email_digest_latest.txt").write_text(text_body, encoding="utf-8")
 
-        # 1. Se credenciais SMTP estiverem presentes, usa SMTP (necessário para Cloud / Render)
+        # 1. Se RESEND_API_KEY estiver configurada, usa API HTTPS (porta 443 - zero bloqueios na nuvem Render)
+        if os.environ.get("RESEND_API_KEY"):
+            console.print("📧 A tentar envio via Resend API (HTTPS porta 443)...")
+            if self.send_via_resend(subject, text_body, html_body, html_report_path):
+                return True
+
+        # 2. Se credenciais SMTP estiverem presentes, tenta SMTP com timeout estrito
         if self.smtp_password:
             console.print("📧 A tentar envio via servidor SMTP seguro...")
             if self.send_via_smtp(subject, text_body, html_body, html_report_path):
                 return True
 
-        # 2. Em macOS (ambiente local), utilizar Apple Mail nativo
+        # 3. Em macOS (ambiente local), utilizar Apple Mail nativo
         import sys
         if sys.platform == "darwin":
             console.print("📧 A enviar notificação via Apple Mail nativo (macOS)...")
             if self.send_via_apple_mail(subject, text_body, html_report_path):
                 return True
         else:
-            console.print("[yellow]ℹ️ Envio de e-mail na Cloud: Requer configuração de 'SMTP_PASSWORD' nas variáveis de ambiente do Render.[/yellow]")
+            console.print("[yellow]ℹ️ Envio de e-mail na Cloud: O Render Free Tier bloqueia portas SMTP tradicionais (Errno 101).[/yellow]")
+            console.print("[yellow]   Para envio 100% automático na nuvem, adicione 'RESEND_API_KEY' (grátis em resend.com) no Render.[/yellow]")
             return False
 
         console.print("[bold red]❌ Não foi possível enviar o e-mail automaticamente por nenhum dos métodos.[/bold red]")
