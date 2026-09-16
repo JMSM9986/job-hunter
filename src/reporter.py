@@ -628,8 +628,14 @@ class JobReporter:
                 <span id="btnIcon">🚀</span>
                 <span id="btnText">Atualizar Pesquisa</span>
             </button>
+            <button class="btn-secondary" onclick="copyExecutiveSummary()" id="btnCopySummary" title="Copiar resumo para WhatsApp ou Notas">
+                📋 Copiar Resumo
+            </button>
+            <a href="/resumo.txt" target="_blank" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center;" title="Ver resumo em texto simples">
+                📄 Texto
+            </a>
             <button class="btn-secondary" onclick="toggleConsole()">
-                📟 Ver Logs
+                📟 Logs
             </button>
         </div>
     </div>
@@ -842,6 +848,25 @@ function toggleConsole() {{
     }}
 }}
 
+const pageRunTimestamp = "{now_str}";
+
+async function copyExecutiveSummary() {{
+    try {{
+        const res = await fetch('/resumo.txt');
+        if (!res.ok) throw new Error('Não disponível');
+        const txt = await res.text();
+        await navigator.clipboard.writeText(txt);
+        const btn = document.getElementById('btnCopySummary');
+        if (btn) {{
+            const orig = btn.innerHTML;
+            btn.innerHTML = '✅ Copiado!';
+            setTimeout(() => {{ btn.innerHTML = orig; }}, 2500);
+        }}
+    }} catch (e) {{
+        window.open('/resumo.txt', '_blank');
+    }}
+}}
+
 // Polling e controlo do agente com a API local
 async function pollAgentStatus() {{
     try {{
@@ -866,6 +891,11 @@ async function pollAgentStatus() {{
             if (isRunning) {{
                 // Terminou a execução agora - recarregar com cache-busting obrigatório no telemóvel
                 isRunning = false;
+                window.location.href = window.location.pathname + '?v=' + Date.now();
+                return;
+            }}
+            // Detetar atualização externa (ex: agendamento matinal autónomo das 09:00)
+            if (data.last_run && data.last_run !== pageRunTimestamp) {{
                 window.location.href = window.location.pathname + '?v=' + Date.now();
                 return;
             }}

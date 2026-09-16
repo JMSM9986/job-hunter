@@ -176,6 +176,19 @@ def run_agent_pipeline(days: int = 15, send_email: bool = True, location: str = 
         with state_lock:
             app_state["is_running"] = False
 
+def check_and_run_daily_if_needed():
+    """Garante que a pesquisa diária corre caso o contentor tenha acordado e hoje ainda não tenha havido pesquisa."""
+    now_today = datetime.now(LISBON_TZ).strftime("%d/%m/%Y")
+    with state_lock:
+        last = app_state.get("last_run") or ""
+        running = app_state["is_running"]
+    
+    # Se last_run não contém a data de hoje e não está a correr
+    if now_today not in last and not running:
+        add_log(f"🔄 Sessão do dia {now_today}. A executar recolha autónoma de oportunidades...")
+        t = threading.Thread(target=run_agent_pipeline, kwargs={"days": 15, "send_email": True}, daemon=True)
+        t.start()
+
 class AgentWebHandler(BaseHTTPRequestHandler):
     protocol_version = "HTTP/1.1"
     timeout = 10
@@ -224,7 +237,7 @@ class AgentWebHandler(BaseHTTPRequestHandler):
 
     def do_HEAD(self):
         parsed_path = self.path.split('?')[0]
-        if parsed_path in ['/', '/index.html', '/dashboard']:
+        if parsed_path in ['/', '/index.html', '/dashboard', '/digest', '/email', '/resumo', '/resumo.txt']:
             self.send_response(200)
             self.send_header('Content-Type', 'text/html; charset=utf-8')
             self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
@@ -246,12 +259,27 @@ class AgentWebHandler(BaseHTTPRequestHandler):
         
         # Servir diretamente o Dashboard Interativo NATIVO (Zero Iframes)
         if parsed_path in ['/', '/index.html', '/dashboard']:
+            check_and_run_daily_if_needed()
             report_file = BASE_DIR / "relatorio_vagas.html"
             if report_file.exists():
                 content = report_file.read_bytes()
                 self._send_bytes(content, content_type='text/html; charset=utf-8')
             else:
                 self._send_bytes(b"<h1>Agente de Emprego ativo. A carregar dados...</h1>", status=200)
+
+        elif parsed_path in ['/digest', '/email', '/resumo']:
+            digest_file = BASE_DIR / "email_digest_latest.html"
+            if digest_file.exists():
+                self._send_bytes(digest_file.read_bytes(), content_type='text/html; charset=utf-8')
+            else:
+                self._send_bytes(b"<h1>Resumo executivo a ser preparado pelo agente...</h1>", status=200)
+
+        elif parsed_path in ['/resumo.txt', '/digest.txt']:
+            txt_file = BASE_DIR / "email_digest_latest.txt"
+            if txt_file.exists():
+                self._send_bytes(txt_file.read_bytes(), content_type='text/plain; charset=utf-8')
+            else:
+                self._send_bytes(b"Resumo em texto a ser preparado pelo agente...", content_type='text/plain; charset=utf-8')
 
         elif parsed_path == '/api/status':
             pub_url = ""

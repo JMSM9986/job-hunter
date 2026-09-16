@@ -323,11 +323,12 @@ class JobEmailNotifier:
             return False
 
     def send_via_smtp(self, subject: str, text_content: str, html_content: str, attachment_path: Optional[str] = None) -> bool:
-        """Envia e-mail via servidor SMTP (ex: Gmail SMTP com App Password)."""
+        """Envia e-mail via servidor SMTP (ex: Gmail SMTP) testando portas 465 (SSL) e 587 (TLS)."""
         try:
             if not self.smtp_password:
                 return False
 
+            clean_pwd = self.smtp_password.replace(" ", "").strip()
             msg = MIMEMultipart("mixed")
             msg["Subject"] = subject
             msg["From"] = self.sender
@@ -344,23 +345,38 @@ class JobEmailNotifier:
                     part["Content-Disposition"] = f'attachment; filename="{Path(attachment_path).name}"'
                     msg.attach(part)
 
-            # Timeout estrito de 5.0s para evitar congelamento em clouds que bloqueiam portas SMTP
-            with smtplib.SMTP(self.smtp_host, self.smtp_port, timeout=5.0) as server:
-                server.starttls()
-                server.login(self.smtp_user, self.smtp_password)
-                server.sendmail(self.sender, [self.recipient], msg.as_string())
+            # 1. Tentar porta 465 (SSL Direto)
+            try:
+                console.print(f"📧 A testar envio via SMTP SSL ({self.smtp_host}:465)...")
+                with smtplib.SMTP_SSL(self.smtp_host, 465, timeout=4.0) as server:
+                    server.login(self.smtp_user, clean_pwd)
+                    server.sendmail(self.sender, [self.recipient], msg.as_string())
+                console.print(f"📧 [bold green]E-mail enviado com sucesso via SMTP SSL (465) para {self.recipient}![/bold green]")
+                return True
+            except Exception as e_ssl:
+                console.print(f"[dim]ℹ️ Porta 465 não disponível ({e_ssl}). A testar porta 587 TLS...[/dim]")
 
-            console.print(f"📧 [bold green]E-mail enviado com sucesso via SMTP ({self.smtp_host}) para {self.recipient}![/bold green]")
-            return True
+            # 2. Tentar porta 587 (STARTTLS)
+            try:
+                with smtplib.SMTP(self.smtp_host, 587, timeout=4.0) as server:
+                    server.starttls()
+                    server.login(self.smtp_user, clean_pwd)
+                    server.sendmail(self.sender, [self.recipient], msg.as_string())
+                console.print(f"📧 [bold green]E-mail enviado com sucesso via SMTP TLS (587) para {self.recipient}![/bold green]")
+                return True
+            except Exception as e_tls:
+                console.print(f"[dim]ℹ️ Porta 587 não disponível ({e_tls}).[/dim]")
+
+            return False
         except Exception as e:
-            console.print(f"[yellow]⚠️ Falha no envio via SMTP: {e}[/yellow]")
+            console.print(f"[yellow]⚠️ Falha na rotina SMTP: {e}[/yellow]")
             return False
 
     def send_daily_digest(self, profile: CVProfile, offers: List[JobOffer], html_report_path: Optional[str] = None, top_n: int = 10) -> bool:
         """
         Ponto de entrada principal para envio da notificação diária.
-        1. Resend API (HTTPS porta 443 - garantido na cloud)
-        2. SMTP seguro (se as portas não forem bloqueadas pelo provedor cloud)
+        1. SMTP seguro (porta 465 SSL ou 587 TLS com App Password)
+        2. Resend API (se configurada)
         3. Apple Mail nativo (se estiver em macOS local)
         """
         now_date_str = datetime.now(LISBON_TZ).strftime("%d/%m/%Y")
@@ -369,20 +385,20 @@ class JobEmailNotifier:
         text_body = self.build_text_body(profile, offers, top_n=top_n)
         html_body = self.build_html_body(profile, offers, top_n=top_n)
 
-        # Salvar cópia local do corpo do e-mail para histórico
+        # Salvar cópia local do corpo do e-mail para histórico e consulta web
         Path("email_digest_latest.html").write_text(html_body, encoding="utf-8")
         Path("email_digest_latest.txt").write_text(text_body, encoding="utf-8")
 
-        # 1. Se RESEND_API_KEY estiver configurada, usa API HTTPS (porta 443 - zero bloqueios na nuvem Render)
+        # 1. Se credenciais SMTP estiverem presentes, tenta SMTP seguro
+        if self.smtp_password:
+            console.print("📧 A testar envio via servidor seguro da Google (Gmail)...")
+            if self.send_via_smtp(subject, text_body, html_body, html_report_path):
+                return True
+
+        # 2. Se RESEND_API_KEY estiver configurada, tenta API HTTPS
         if os.environ.get("RESEND_API_KEY"):
             console.print("📧 A tentar envio via Resend API (HTTPS porta 443)...")
             if self.send_via_resend(subject, text_body, html_body, html_report_path):
-                return True
-
-        # 2. Se credenciais SMTP estiverem presentes, tenta SMTP com timeout estrito
-        if self.smtp_password:
-            console.print("📧 A tentar envio via servidor SMTP seguro...")
-            if self.send_via_smtp(subject, text_body, html_body, html_report_path):
                 return True
 
         # 3. Em macOS (ambiente local), utilizar Apple Mail nativo
@@ -392,9 +408,8 @@ class JobEmailNotifier:
             if self.send_via_apple_mail(subject, text_body, html_report_path):
                 return True
         else:
-            console.print("[yellow]ℹ️ Envio de e-mail na Cloud: O Render Free Tier bloqueia portas SMTP tradicionais (Errno 101).[/yellow]")
-            console.print("[yellow]   Para envio 100% automático na nuvem, adicione 'RESEND_API_KEY' (grátis em resend.com) no Render.[/yellow]")
+            console.print("[cyan]ℹ️ Resumo executivo guardado e disponível no dashboard web.[/cyan]")
             return False
 
-        console.print("[bold red]❌ Não foi possível enviar o e-mail automaticamente por nenhum dos métodos.[/bold red]")
+        console.print("[bold yellow]ℹ️ Notificação gravada localmente com sucesso.[/bold yellow]")
         return False
