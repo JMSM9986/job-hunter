@@ -1,9 +1,9 @@
 # Relatório de Oportunidades de Emprego — Portugal
 **Candidato:** JOSÉ MANUEL DA SILVA MONTEIRO  
 **Perfil:** Financial Crime & Compliance | Análise e Decisão de Crédito | Gestão de Portefólio  
-**Data da Pesquisa:** 16/09/2026 às 20:32  
+**Data da Pesquisa:** 16/09/2026 às 21:19  
 **Critérios:** Lisboa (concelho) ou Remoto | Anúncios ativos dos últimos 15 dias | Com ofertas em Part-Time  
-**Total de Ofertas Válidas:** 30
+**Total de Ofertas Válidas:** 31
 
 ---
 
@@ -107,7 +107,20 @@
 
 ---
 
-### 8. [Chief Financial Officer (CFO)](https://www.net-empregos.com/15994841/chief-financial-officer-cfo/) — **Fit Score: 87.0%**
+### 8. [Diretor Financeiro / Head of Finance](https://www.net-empregos.com/15914765/diretor-financeiro-head-of-finance/) — **Fit Score: 87.0%**
+- **Empresa:** Confidencial / Não especificada
+- **Categoria:** Direção Financeira (CFO)
+- **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa)
+- **Data de Publicação:** 09/09/2026 (publicado há 7 dias)
+- **Portal de Origem:** Net-Empregos
+- **Link Direto para Candidatura:** [https://www.net-empregos.com/15914765/diretor-financeiro-head-of-finance/](https://www.net-empregos.com/15914765/diretor-financeiro-head-of-finance/)
+- **Resumo da Oferta:** Oportunidade para Diretor Financeiro / Head of Finance na empresa Confidencial / Não especificada. Regime: Full-Time | Presencial (Lisboa). Foco na área de Direção Financeira (CFO). Anúncio publicado há 3 dia(s).
+- **Alinhamento com o Perfil:** Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO), Nível Executivo / Sénior (25+ anos).
+- **Competências Chave Identificadas:** Liderança e Direção Financeira Executiva (CFO), Nível Executivo / Sénior (25+ anos)
+
+---
+
+### 9. [Chief Financial Officer (CFO)](https://www.net-empregos.com/15994841/chief-financial-officer-cfo/) — **Fit Score: 87.0%**
 - **Empresa:** Confidencial / Não especificada
 - **Categoria:** Direção Financeira (CFO)
 - **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa)
@@ -120,7 +133,7 @@
 
 ---
 
-### 9. [Diretor/a Financeiro/a - CFO (funções presenciais)](https://www.net-empregos.com/15678806/diretor-a-financeiro-a-cfo-funcoes-presenciais/) — **Fit Score: 87.0%**
+### 10. [Diretor/a Financeiro/a - CFO (funções presenciais)](https://www.net-empregos.com/15678806/diretor-a-financeiro-a-cfo-funcoes-presenciais/) — **Fit Score: 87.0%**
 - **Empresa:** Confidencial / Não especificada
 - **Categoria:** Direção Financeira (CFO)
 - **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa)
@@ -128,19 +141,6 @@
 - **Portal de Origem:** Net-Empregos
 - **Link Direto para Candidatura:** [https://www.net-empregos.com/15678806/diretor-a-financeiro-a-cfo-funcoes-presenciais/](https://www.net-empregos.com/15678806/diretor-a-financeiro-a-cfo-funcoes-presenciais/)
 - **Resumo da Oferta:** Oportunidade para Diretor/a Financeiro/a - CFO (funções presenciais) na empresa Confidencial / Não especificada. Regime: Full-Time | Presencial (Lisboa). Foco na área de Direção Financeira (CFO). Anúncio publicado há 1 dia(s).
-- **Alinhamento com o Perfil:** Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO), Nível Executivo / Sénior (25+ anos).
-- **Competências Chave Identificadas:** Liderança e Direção Financeira Executiva (CFO), Nível Executivo / Sénior (25+ anos)
-
----
-
-### 10. [Diretor Financeiro / Head of Finance](https://www.net-empregos.com/15914765/diretor-financeiro-head-of-finance/) — **Fit Score: 87.0%**
-- **Empresa:** Confidencial / Não especificada
-- **Categoria:** Direção Financeira (CFO)
-- **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa)
-- **Data de Publicação:** 09/09/2026 (publicado há 7 dias)
-- **Portal de Origem:** Net-Empregos
-- **Link Direto para Candidatura:** [https://www.net-empregos.com/15914765/diretor-financeiro-head-of-finance/](https://www.net-empregos.com/15914765/diretor-financeiro-head-of-finance/)
-- **Resumo da Oferta:** Oportunidade para Diretor Financeiro / Head of Finance na empresa Confidencial / Não especificada. Regime: Full-Time | Presencial (Lisboa). Foco na área de Direção Financeira (CFO). Anúncio publicado há 3 dia(s).
 - **Alinhamento com o Perfil:** Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO), Nível Executivo / Sénior (25+ anos).
 - **Competências Chave Identificadas:** Liderança e Direção Financeira Executiva (CFO), Nível Executivo / Sénior (25+ anos)
 
@@ -159,20 +159,7 @@
 
 ---
 
-### 12. [Finance Manager - Product Analytics and Insights (x2)](https://pt.linkedin.com/jobs/view/finance-manager-product-analytics-and-insights-x2-at-amgen-4453139415) — **Fit Score: 77.0%**
-- **Empresa:** Amgen
-- **Categoria:** Direção Financeira (CFO)
-- **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa, Lisboa, Portugal)
-- **Data de Publicação:** 02/09/2026 (publicado há 14 dias)
-- **Portal de Origem:** LinkedIn Jobs
-- **Link Direto para Candidatura:** [https://pt.linkedin.com/jobs/view/finance-manager-product-analytics-and-insights-x2-at-amgen-4453139415](https://pt.linkedin.com/jobs/view/finance-manager-product-analytics-and-insights-x2-at-amgen-4453139415)
-- **Resumo da Oferta:** Oportunidade para Finance Manager - Product Analytics and Insights (x2) na empresa Amgen. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 10 dia(s).
-- **Alinhamento com o Perfil:** Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).
-- **Competências Chave Identificadas:** Liderança e Direção Financeira Executiva (CFO)
-
----
-
-### 13. [Controller Financeiro | Controlo de Gestão e Governação de Fornecedores](https://pt.linkedin.com/jobs/view/controller-financeiro-controlo-de-gest%C3%A3o-e-governa%C3%A7%C3%A3o-de-fornecedores-at-santander-portugal-4446525068) — **Fit Score: 77.0%**
+### 12. [Controller Financeiro | Controlo de Gestão e Governação de Fornecedores](https://pt.linkedin.com/jobs/view/controller-financeiro-controlo-de-gest%C3%A3o-e-governa%C3%A7%C3%A3o-de-fornecedores-at-santander-portugal-4446525068) — **Fit Score: 77.0%**
 - **Empresa:** Santander Portugal
 - **Categoria:** Direção Financeira (CFO)
 - **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa, Lisboa, Portugal)
@@ -180,6 +167,19 @@
 - **Portal de Origem:** LinkedIn Jobs
 - **Link Direto para Candidatura:** [https://pt.linkedin.com/jobs/view/controller-financeiro-controlo-de-gest%C3%A3o-e-governa%C3%A7%C3%A3o-de-fornecedores-at-santander-portugal-4446525068](https://pt.linkedin.com/jobs/view/controller-financeiro-controlo-de-gest%C3%A3o-e-governa%C3%A7%C3%A3o-de-fornecedores-at-santander-portugal-4446525068)
 - **Resumo da Oferta:** Oportunidade para Controller Financeiro | Controlo de Gestão e Governação de Fornecedores na empresa Santander Portugal. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 1 dia(s).
+- **Alinhamento com o Perfil:** Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).
+- **Competências Chave Identificadas:** Liderança e Direção Financeira Executiva (CFO)
+
+---
+
+### 13. [Finance Manager - Product Analytics and Insights (x2)](https://pt.linkedin.com/jobs/view/finance-manager-product-analytics-and-insights-x2-at-amgen-4453139415) — **Fit Score: 77.0%**
+- **Empresa:** Amgen
+- **Categoria:** Direção Financeira (CFO)
+- **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa, Lisboa, Portugal)
+- **Data de Publicação:** 02/09/2026 (publicado há 14 dias)
+- **Portal de Origem:** LinkedIn Jobs
+- **Link Direto para Candidatura:** [https://pt.linkedin.com/jobs/view/finance-manager-product-analytics-and-insights-x2-at-amgen-4453139415](https://pt.linkedin.com/jobs/view/finance-manager-product-analytics-and-insights-x2-at-amgen-4453139415)
+- **Resumo da Oferta:** Oportunidade para Finance Manager - Product Analytics and Insights (x2) na empresa Amgen. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 10 dia(s).
 - **Alinhamento com o Perfil:** Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).
 - **Competências Chave Identificadas:** Liderança e Direção Financeira Executiva (CFO)
 
@@ -198,20 +198,7 @@
 
 ---
 
-### 15. [Financial Controller](https://pt.linkedin.com/jobs/view/financial-controller-at-air-apps-4463431904) — **Fit Score: 77.0%**
-- **Empresa:** Air Apps
-- **Categoria:** Direção Financeira (CFO)
-- **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa, Lisboa, Portugal)
-- **Data de Publicação:** 10/09/2026 (publicado há 6 dias)
-- **Portal de Origem:** LinkedIn Jobs
-- **Link Direto para Candidatura:** [https://pt.linkedin.com/jobs/view/financial-controller-at-air-apps-4463431904](https://pt.linkedin.com/jobs/view/financial-controller-at-air-apps-4463431904)
-- **Resumo da Oferta:** Oportunidade para Financial Controller na empresa Air Apps. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 2 dia(s).
-- **Alinhamento com o Perfil:** Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).
-- **Competências Chave Identificadas:** Liderança e Direção Financeira Executiva (CFO)
-
----
-
-### 16. [FP&A Director - Maternity Cover](https://pt.linkedin.com/jobs/view/fp-a-director-maternity-cover-at-team-blue-4462412817) — **Fit Score: 77.0%**
+### 15. [FP&A Director - Maternity Cover](https://pt.linkedin.com/jobs/view/fp-a-director-maternity-cover-at-team-blue-4462412817) — **Fit Score: 77.0%**
 - **Empresa:** team.blue
 - **Categoria:** Direção Financeira (CFO)
 - **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa, Lisboa, Portugal)
@@ -219,6 +206,19 @@
 - **Portal de Origem:** LinkedIn Jobs
 - **Link Direto para Candidatura:** [https://pt.linkedin.com/jobs/view/fp-a-director-maternity-cover-at-team-blue-4462412817](https://pt.linkedin.com/jobs/view/fp-a-director-maternity-cover-at-team-blue-4462412817)
 - **Resumo da Oferta:** Oportunidade para FP&A Director - Maternity Cover na empresa team.blue. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 10 dia(s).
+- **Alinhamento com o Perfil:** Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).
+- **Competências Chave Identificadas:** Liderança e Direção Financeira Executiva (CFO)
+
+---
+
+### 16. [Financial Controller](https://pt.linkedin.com/jobs/view/financial-controller-at-air-apps-4463431904) — **Fit Score: 77.0%**
+- **Empresa:** Air Apps
+- **Categoria:** Direção Financeira (CFO)
+- **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa, Lisboa, Portugal)
+- **Data de Publicação:** 10/09/2026 (publicado há 6 dias)
+- **Portal de Origem:** LinkedIn Jobs
+- **Link Direto para Candidatura:** [https://pt.linkedin.com/jobs/view/financial-controller-at-air-apps-4463431904](https://pt.linkedin.com/jobs/view/financial-controller-at-air-apps-4463431904)
+- **Resumo da Oferta:** Oportunidade para Financial Controller na empresa Air Apps. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 2 dia(s).
 - **Alinhamento com o Perfil:** Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).
 - **Competências Chave Identificadas:** Liderança e Direção Financeira Executiva (CFO)
 
@@ -328,15 +328,16 @@
 
 ---
 
-### 25. [Capital Management & Reporting Consultant](https://pt.linkedin.com/jobs/view/capital-management-reporting-consultant-at-pwc-portugal-4297548221) — **Fit Score: 55.0%**
-- **Empresa:** PwC Portugal
+### 25. [Senior Controller | M&a Experience | Fluent English](https://expressoemprego.pt/emprego/senior-controller---m-a-experience---fluent-englis/porto/2465651) — **Fit Score: 65.0%**
+- **Empresa:** Michael Page Portugal
 - **Categoria:** Direção Financeira (CFO)
-- **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa, Lisboa, Portugal)
+- **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa)
 - **Data de Publicação:** 07/09/2026 (publicado há 9 dias)
-- **Portal de Origem:** LinkedIn Jobs
-- **Link Direto para Candidatura:** [https://pt.linkedin.com/jobs/view/capital-management-reporting-consultant-at-pwc-portugal-4297548221](https://pt.linkedin.com/jobs/view/capital-management-reporting-consultant-at-pwc-portugal-4297548221)
-- **Resumo da Oferta:** Oportunidade para Capital Management & Reporting Consultant na empresa PwC Portugal. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 5 dia(s).
-- **Alinhamento com o Perfil:** Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Gestão e liderança executiva.
+- **Portal de Origem:** Expresso Emprego
+- **Link Direto para Candidatura:** [https://expressoemprego.pt/emprego/senior-controller---m-a-experience---fluent-englis/porto/2465651](https://expressoemprego.pt/emprego/senior-controller---m-a-experience---fluent-englis/porto/2465651)
+- **Resumo da Oferta:** Oportunidade para Senior Controller | M&a Experience | Fluent English na empresa Michael Page Portugal. Regime: Full-Time | Presencial (Lisboa). Foco na área de Direção Financeira (CFO). Anúncio publicado há 9 dia(s).
+- **Alinhamento com o Perfil:** Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Nível Executivo / Sénior (25+ anos).
+- **Competências Chave Identificadas:** Nível Executivo / Sénior (25+ anos)
 
 ---
 
@@ -352,7 +353,19 @@
 
 ---
 
-### 27. [Financial Services Risk & Regulation New Joiners](https://pt.linkedin.com/jobs/view/financial-services-risk-regulation-new-joiners-at-pwc-portugal-4459020548) — **Fit Score: 55.0%**
+### 27. [Capital Management & Reporting Consultant](https://pt.linkedin.com/jobs/view/capital-management-reporting-consultant-at-pwc-portugal-4297548221) — **Fit Score: 55.0%**
+- **Empresa:** PwC Portugal
+- **Categoria:** Direção Financeira (CFO)
+- **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa, Lisboa, Portugal)
+- **Data de Publicação:** 07/09/2026 (publicado há 9 dias)
+- **Portal de Origem:** LinkedIn Jobs
+- **Link Direto para Candidatura:** [https://pt.linkedin.com/jobs/view/capital-management-reporting-consultant-at-pwc-portugal-4297548221](https://pt.linkedin.com/jobs/view/capital-management-reporting-consultant-at-pwc-portugal-4297548221)
+- **Resumo da Oferta:** Oportunidade para Capital Management & Reporting Consultant na empresa PwC Portugal. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 5 dia(s).
+- **Alinhamento com o Perfil:** Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Gestão e liderança executiva.
+
+---
+
+### 28. [Financial Services Risk & Regulation New Joiners](https://pt.linkedin.com/jobs/view/financial-services-risk-regulation-new-joiners-at-pwc-portugal-4459020548) — **Fit Score: 55.0%**
 - **Empresa:** PwC Portugal
 - **Categoria:** Direção Financeira (CFO)
 - **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa, Lisboa, Portugal)
@@ -364,7 +377,7 @@
 
 ---
 
-### 28. [Investment Banking Business Researcher](https://pt.linkedin.com/jobs/view/investment-banking-business-researcher-at-bnp-paribas-cib-4418972177) — **Fit Score: 55.0%**
+### 29. [Investment Banking Business Researcher](https://pt.linkedin.com/jobs/view/investment-banking-business-researcher-at-bnp-paribas-cib-4418972177) — **Fit Score: 55.0%**
 - **Empresa:** BNP Paribas CIB
 - **Categoria:** Direção Financeira (CFO)
 - **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa, Lisboa, Portugal)
@@ -376,7 +389,7 @@
 
 ---
 
-### 29. [Capital Markets Profit and Loss Reconciliation - Controller](https://pt.linkedin.com/jobs/view/capital-markets-profit-and-loss-reconciliation-controller-at-bnp-paribas-cib-4464695274) — **Fit Score: 55.0%**
+### 30. [Capital Markets Profit and Loss Reconciliation - Controller](https://pt.linkedin.com/jobs/view/capital-markets-profit-and-loss-reconciliation-controller-at-bnp-paribas-cib-4464695274) — **Fit Score: 55.0%**
 - **Empresa:** BNP Paribas CIB
 - **Categoria:** Direção Financeira (CFO)
 - **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa, Lisboa, Portugal)
@@ -388,7 +401,7 @@
 
 ---
 
-### 30. [Finance Capital Markets Products Controller](https://pt.linkedin.com/jobs/view/finance-capital-markets-products-controller-at-bnp-paribas-cib-4464698243) — **Fit Score: 55.0%**
+### 31. [Finance Capital Markets Products Controller](https://pt.linkedin.com/jobs/view/finance-capital-markets-products-controller-at-bnp-paribas-cib-4464698243) — **Fit Score: 55.0%**
 - **Empresa:** BNP Paribas CIB
 - **Categoria:** Direção Financeira (CFO)
 - **Regime & Localização:** `Full-Time` `Lisboa` (Lisboa, Lisboa, Portugal)

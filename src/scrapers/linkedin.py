@@ -110,7 +110,10 @@ class LinkedInPublicScraper(BaseScraper):
                     datetime_val = time_tag.get("datetime")
                     if datetime_val:
                         try:
-                            pub_date = datetime.fromisoformat(datetime_val)
+                            parsed_d = datetime.fromisoformat(datetime_val)
+                            if parsed_d.tzinfo is not None:
+                                parsed_d = parsed_d.astimezone().replace(tzinfo=None)
+                            pub_date = parsed_d
                             days_ago = max(0, (now - pub_date).days)
                         except Exception:
                             pass

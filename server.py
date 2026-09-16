@@ -6,8 +6,18 @@ import time
 import subprocess
 import threading
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
+
+# Forçar timezone local de Portugal (WEST/WET) a nível de SO e processo
+os.environ["TZ"] = "Europe/Lisbon"
+try:
+    time.tzset()
+except Exception:
+    pass
+
+LISBON_TZ = ZoneInfo("Europe/Lisbon")
 
 PORT = int(os.environ.get("PORT", 5050))
 BASE_DIR = Path(__file__).resolve().parent
@@ -21,21 +31,21 @@ app_state = {
     "high_fit": 0,
     "part_time": 0,
     "remote": 0,
-    "logs": [f"[{datetime.now().strftime('%H:%M:%S')}] Servidor de controlo web iniciado com sucesso."],
+    "logs": [f"[{datetime.now(LISBON_TZ).strftime('%H:%M:%S')}] Servidor de controlo web iniciado com sucesso."],
     "exit_code": 0
 }
 state_lock = threading.RLock()
 
 def daily_scheduler_worker():
-    """Agendador autónomo que dispara a pesquisa diária às 09:00 (hora local)."""
+    """Agendador autónomo que dispara a pesquisa diária às 09:00 (hora local de Portugal)."""
     while True:
         try:
-            now = datetime.now()
+            now = datetime.now(LISBON_TZ)
             if now.hour == 9 and now.minute == 0:
                 with state_lock:
                     running = app_state["is_running"]
                 if not running:
-                    add_log("⏰ Disparo automático matinal das 09:00 iniciado!")
+                    add_log("⏰ Disparo automático matinal das 09:00 (Portugal) iniciado!")
                     t = threading.Thread(target=run_agent_pipeline, kwargs={"days": 15, "send_email": True}, daemon=True)
                     t.start()
                     time.sleep(70)
@@ -45,7 +55,7 @@ def daily_scheduler_worker():
 
 def add_log(msg: str):
     with state_lock:
-        timestamp = datetime.now().strftime("%H:%M:%S")
+        timestamp = datetime.now(LISBON_TZ).strftime("%H:%M:%S")
         app_state["logs"].append(f"[{timestamp}] {msg}")
         if len(app_state["logs"]) > 250:
             app_state["logs"] = app_state["logs"][-250:]
@@ -115,6 +125,7 @@ def run_agent_pipeline(days: int = 15, send_email: bool = True, location: str = 
 
     sub_env = os.environ.copy()
     sub_env["PYTHONUNBUFFERED"] = "1"
+    sub_env["TZ"] = "Europe/Lisbon"
 
     try:
         process = subprocess.Popen(
@@ -142,7 +153,7 @@ def run_agent_pipeline(days: int = 15, send_email: bool = True, location: str = 
 
         update_stats_from_reports()
 
-        now_str = datetime.now().strftime("%d/%m/%Y às %H:%M")
+        now_str = datetime.now(LISBON_TZ).strftime("%d/%m/%Y às %H:%M")
         with state_lock:
             app_state["is_running"] = False
             app_state["exit_code"] = return_code

@@ -2,6 +2,7 @@ import os
 import subprocess
 import smtplib
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from typing import List, Optional
 from email.mime.multipart import MIMEMultipart
@@ -11,13 +12,14 @@ from .models import JobOffer, CVProfile
 from rich.console import Console
 
 console = Console()
+LISBON_TZ = ZoneInfo("Europe/Lisbon")
 
 class JobEmailNotifier:
     """
     Envia o resumo executivo diário de vagas de emprego por e-mail.
     Suporta:
     1. macOS Apple Mail nativo (via osascript) - zero configuração de senhas se a conta já estiver no Mac.
-    2. SMTP padrão (Gmail TLS/SSL) se credenciais SMTP forem configuradas no .env.
+    2. SMTP padrão (Gmail TLS/SSL) se credenciais SMTP forem configuradas no .env ou Render.
     """
 
     def __init__(self, recipient: str = "jmsmonteiro@gmail.com", sender: Optional[str] = None):
@@ -34,11 +36,11 @@ class JobEmailNotifier:
             url = pub_file.read_text(encoding="utf-8").strip()
             if url.startswith("http"):
                 return url
-        return "http://192.168.1.245:5050"
+        return "https://job-hunter-agent-e9z0.onrender.com"
 
     def build_text_body(self, profile: CVProfile, offers: List[JobOffer], top_n: int = 10) -> str:
         """Constrói o corpo executivo em texto simples estruturado para Apple Mail."""
-        now_str = datetime.now().strftime("%d/%m/%Y às %H:%M")
+        now_str = datetime.now(LISBON_TZ).strftime("%d/%m/%Y às %H:%M")
         pub_url = self._get_public_url()
         
         part_times = sum(1 for o in offers if o.is_part_time)
@@ -322,7 +324,7 @@ class JobEmailNotifier:
         Ponto de entrada principal para envio da notificação diária.
         Tenta SMTP se configurado; caso contrário, utiliza Apple Mail nativo do macOS.
         """
-        now_date_str = datetime.now().strftime("%d/%m/%Y")
+        now_date_str = datetime.now(LISBON_TZ).strftime("%d/%m/%Y")
         subject = f"🎯 Resumo Diário de Vagas Executivas (Lisboa & Remoto) - {profile.name} - {now_date_str}"
         
         text_body = self.build_text_body(profile, offers, top_n=top_n)

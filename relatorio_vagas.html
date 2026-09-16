@@ -375,7 +375,7 @@
     <div class="agent-control-bar">
         <div class="agent-status-group">
             <span class="status-dot" id="agentDot"></span>
-            <span id="agentStatusText">Agente Operacional • Última atualização: 16/09/2026 às 20:32</span>
+            <span id="agentStatusText">Agente Operacional • Última atualização: 16/09/2026 às 21:19</span>
         </div>
         <div class="agent-actions">
             <select id="daysSelect" class="control-select">
@@ -405,7 +405,7 @@
     <!-- KPI Stats Grid -->
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="val" id="kpiTotal">30</div>
+            <div class="val" id="kpiTotal">31</div>
             <div class="desc">Vagas Ativas & Validadas</div>
         </div>
         <div class="stat-card">
@@ -508,13 +508,13 @@
     <!-- Filter Buttons -->
     <div class="filter-bar">
         <span style="font-weight: 700; font-size: 0.88rem; margin-right: 4px; color: var(--text-muted);">Portais:</span>
-        <button class="filter-btn active" data-filter-type="portal" data-filter-val="all" onclick="setFilter(this)">Todas <span class="count">30</span></button>
+        <button class="filter-btn active" data-filter-type="portal" data-filter-val="all" onclick="setFilter(this)">Todas <span class="count">31</span></button>
         <button class="filter-btn" data-filter-type="portal" data-filter-val="linkedin" onclick="setFilter(this)">🔵 LinkedIn <span class="count">17</span></button>
-        <button class="filter-btn" data-filter-type="portal" data-filter-val="expresso" onclick="setFilter(this)">🔴 Expresso Emprego <span class="count">2</span></button>
+        <button class="filter-btn" data-filter-type="portal" data-filter-val="expresso" onclick="setFilter(this)">🔴 Expresso Emprego <span class="count">3</span></button>
         <button class="filter-btn" data-filter-type="portal" data-filter-val="netempregos" onclick="setFilter(this)">🟢 Net-Empregos <span class="count">11</span></button>
 
         <span style="font-weight: 700; font-size: 0.88rem; margin-left: 8px; margin-right: 4px; color: var(--text-muted);">Áreas:</span>
-        <button class="filter-btn" data-filter-type="cat" data-filter-val="cfo" onclick="setFilter(this)">💼 CFO / Dir. Financeira <span class="count">24</span></button>
+        <button class="filter-btn" data-filter-type="cat" data-filter-val="cfo" onclick="setFilter(this)">💼 CFO / Dir. Financeira <span class="count">25</span></button>
         <button class="filter-btn" data-filter-type="cat" data-filter-val="admin" onclick="setFilter(this)">🏛️ Assessoria Admin <span class="count">1</span></button>
         <button class="filter-btn" data-filter-type="cat" data-filter-val="consulting" onclick="setFilter(this)">📈 Consultoria <span class="count">0</span></button>
         <button class="filter-btn" data-filter-type="cat" data-filter-val="teaching" onclick="setFilter(this)">🎓 Ensino / Explicações <span class="count">5</span></button>
@@ -808,6 +808,46 @@
             </div>
             
 
+            <div class="job-card" data-category="cfo" data-portal="netempregos" data-parttime="false" data-remote="false" data-banking="false" data-score="87.0" data-search="diretor financeiro / head of finance confidencial / não especificada direção financeira (cfo) net-empregos liderança e direção financeira executiva (cfo) nível executivo / sénior (25+ anos)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Diretor Financeiro / Head of Finance</h3>
+                        <div class="card-company">🏢 <strong>Confidencial / Não especificada</strong> • 📍 Lisboa • <span class="badge" style="background: #dcfce7; color: #15803d; font-weight: 700;">🟢 Net-Empregos</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">87%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 7 dia(s) (09/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Diretor Financeiro / Head of Finance na empresa Confidencial / Não especificada. Regime: Full-Time | Presencial (Lisboa). Foco na área de Direção Financeira (CFO). Anúncio publicado há 3 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO), Nível Executivo / Sénior (25+ anos).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span><span class="skill-tag">Nível Executivo / Sénior (25+ anos)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://www.net-empregos.com/15914765/diretor-financeiro-head-of-finance/" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no Net-Empregos &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
             <div class="job-card" data-category="cfo" data-portal="netempregos" data-parttime="false" data-remote="false" data-banking="false" data-score="87.0" data-search="chief financial officer (cfo) confidencial / não especificada direção financeira (cfo) net-empregos liderança e direção financeira executiva (cfo) nível executivo / sénior (25+ anos)">
                 <div class="card-header">
                     <div style="flex: 1;">
@@ -888,46 +928,6 @@
             </div>
             
 
-            <div class="job-card" data-category="cfo" data-portal="netempregos" data-parttime="false" data-remote="false" data-banking="false" data-score="87.0" data-search="diretor financeiro / head of finance confidencial / não especificada direção financeira (cfo) net-empregos liderança e direção financeira executiva (cfo) nível executivo / sénior (25+ anos)">
-                <div class="card-header">
-                    <div style="flex: 1;">
-                        <div class="card-category">Direção Financeira (CFO)</div>
-                        <h3 class="card-title">Diretor Financeiro / Head of Finance</h3>
-                        <div class="card-company">🏢 <strong>Confidencial / Não especificada</strong> • 📍 Lisboa • <span class="badge" style="background: #dcfce7; color: #15803d; font-weight: 700;">🟢 Net-Empregos</span></div>
-                    </div>
-                    <div class="score-box" style="background-color: #10b981;">
-                        <span class="score-num">87%</span>
-                        <span class="score-label">Afinidade</span>
-                    </div>
-                </div>
-
-                <div class="badges-row">
-                    <span class="badge badge-full-time">💼 Full-Time</span>
-                    <span class="badge badge-location">📍 Lisboa</span>
-                    
-                    <span class="badge badge-date">📅 Há 7 dia(s) (09/09/2026)</span>
-                </div>
-
-                <div class="card-summary">
-                    <strong>Resumo Executivo:</strong> Oportunidade para Diretor Financeiro / Head of Finance na empresa Confidencial / Não especificada. Regime: Full-Time | Presencial (Lisboa). Foco na área de Direção Financeira (CFO). Anúncio publicado há 3 dia(s).
-                </div>
-
-                <div class="card-rationale">
-                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO), Nível Executivo / Sénior (25+ anos).</em>
-                </div>
-
-                <div class="skills-row">
-                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span><span class="skill-tag">Nível Executivo / Sénior (25+ anos)</span>
-                </div>
-
-                <div class="card-footer">
-                    <a href="https://www.net-empregos.com/15914765/diretor-financeiro-head-of-finance/" target="_blank" rel="noopener noreferrer" class="btn-apply">
-                        Ver Oferta no Net-Empregos &rarr;
-                    </a>
-                </div>
-            </div>
-            
-
             <div class="job-card" data-category="admin" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="85.0" data-search="senior consultant  valuation & advisory cushman & wakefield assessoria de administração linkedin jobs economista conselheiro (ordem dos economistas) & consultoria nível executivo / sénior (25+ anos)">
                 <div class="card-header">
                     <div style="flex: 1;">
@@ -962,46 +962,6 @@
 
                 <div class="card-footer">
                     <a href="https://pt.linkedin.com/jobs/view/senior-consultant-valuation-advisory-at-cushman-wakefield-4425662569" target="_blank" rel="noopener noreferrer" class="btn-apply">
-                        Ver Oferta no LinkedIn Jobs &rarr;
-                    </a>
-                </div>
-            </div>
-            
-
-            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="77.0" data-search="finance manager - product analytics and insights (x2) amgen direção financeira (cfo) linkedin jobs liderança e direção financeira executiva (cfo)">
-                <div class="card-header">
-                    <div style="flex: 1;">
-                        <div class="card-category">Direção Financeira (CFO)</div>
-                        <h3 class="card-title">Finance Manager - Product Analytics and Insights (x2)</h3>
-                        <div class="card-company">🏢 <strong>Amgen</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
-                    </div>
-                    <div class="score-box" style="background-color: #10b981;">
-                        <span class="score-num">77%</span>
-                        <span class="score-label">Afinidade</span>
-                    </div>
-                </div>
-
-                <div class="badges-row">
-                    <span class="badge badge-full-time">💼 Full-Time</span>
-                    <span class="badge badge-location">📍 Lisboa</span>
-                    
-                    <span class="badge badge-date">📅 Há 14 dia(s) (02/09/2026)</span>
-                </div>
-
-                <div class="card-summary">
-                    <strong>Resumo Executivo:</strong> Oportunidade para Finance Manager - Product Analytics and Insights (x2) na empresa Amgen. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 10 dia(s).
-                </div>
-
-                <div class="card-rationale">
-                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).</em>
-                </div>
-
-                <div class="skills-row">
-                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span>
-                </div>
-
-                <div class="card-footer">
-                    <a href="https://pt.linkedin.com/jobs/view/finance-manager-product-analytics-and-insights-x2-at-amgen-4453139415" target="_blank" rel="noopener noreferrer" class="btn-apply">
                         Ver Oferta no LinkedIn Jobs &rarr;
                     </a>
                 </div>
@@ -1048,6 +1008,46 @@
             </div>
             
 
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="77.0" data-search="finance manager - product analytics and insights (x2) amgen direção financeira (cfo) linkedin jobs liderança e direção financeira executiva (cfo)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Finance Manager - Product Analytics and Insights (x2)</h3>
+                        <div class="card-company">🏢 <strong>Amgen</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">77%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 14 dia(s) (02/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Finance Manager - Product Analytics and Insights (x2) na empresa Amgen. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 10 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/finance-manager-product-analytics-and-insights-x2-at-amgen-4453139415" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
             <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="77.0" data-search="financial controller air apps direção financeira (cfo) linkedin jobs liderança e direção financeira executiva (cfo)">
                 <div class="card-header">
                     <div style="flex: 1;">
@@ -1088,46 +1088,6 @@
             </div>
             
 
-            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="77.0" data-search="financial controller air apps direção financeira (cfo) linkedin jobs liderança e direção financeira executiva (cfo)">
-                <div class="card-header">
-                    <div style="flex: 1;">
-                        <div class="card-category">Direção Financeira (CFO)</div>
-                        <h3 class="card-title">Financial Controller</h3>
-                        <div class="card-company">🏢 <strong>Air Apps</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
-                    </div>
-                    <div class="score-box" style="background-color: #10b981;">
-                        <span class="score-num">77%</span>
-                        <span class="score-label">Afinidade</span>
-                    </div>
-                </div>
-
-                <div class="badges-row">
-                    <span class="badge badge-full-time">💼 Full-Time</span>
-                    <span class="badge badge-location">📍 Lisboa</span>
-                    
-                    <span class="badge badge-date">📅 Há 6 dia(s) (10/09/2026)</span>
-                </div>
-
-                <div class="card-summary">
-                    <strong>Resumo Executivo:</strong> Oportunidade para Financial Controller na empresa Air Apps. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 2 dia(s).
-                </div>
-
-                <div class="card-rationale">
-                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).</em>
-                </div>
-
-                <div class="skills-row">
-                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span>
-                </div>
-
-                <div class="card-footer">
-                    <a href="https://pt.linkedin.com/jobs/view/financial-controller-at-air-apps-4463431904" target="_blank" rel="noopener noreferrer" class="btn-apply">
-                        Ver Oferta no LinkedIn Jobs &rarr;
-                    </a>
-                </div>
-            </div>
-            
-
             <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="77.0" data-search="fp&a director - maternity cover team.blue direção financeira (cfo) linkedin jobs liderança e direção financeira executiva (cfo)">
                 <div class="card-header">
                     <div style="flex: 1;">
@@ -1162,6 +1122,46 @@
 
                 <div class="card-footer">
                     <a href="https://pt.linkedin.com/jobs/view/fp-a-director-maternity-cover-at-team-blue-4462412817" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="77.0" data-search="financial controller air apps direção financeira (cfo) linkedin jobs liderança e direção financeira executiva (cfo)">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Financial Controller</h3>
+                        <div class="card-company">🏢 <strong>Air Apps</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #10b981;">
+                        <span class="score-num">77%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 6 dia(s) (10/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Financial Controller na empresa Air Apps. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 2 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Liderança e Direção Financeira Executiva (CFO).</em>
+                </div>
+
+                <div class="skills-row">
+                    <span class="skill-tag">Liderança e Direção Financeira Executiva (CFO)</span>
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/financial-controller-at-air-apps-4463431904" target="_blank" rel="noopener noreferrer" class="btn-apply">
                         Ver Oferta no LinkedIn Jobs &rarr;
                     </a>
                 </div>
@@ -1488,15 +1488,15 @@
             </div>
             
 
-            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="55.0" data-search="capital management & reporting consultant pwc portugal direção financeira (cfo) linkedin jobs ">
+            <div class="job-card" data-category="cfo" data-portal="expresso" data-parttime="false" data-remote="false" data-banking="false" data-score="65.0" data-search="senior controller | m&a experience | fluent english michael page portugal direção financeira (cfo) expresso emprego nível executivo / sénior (25+ anos)">
                 <div class="card-header">
                     <div style="flex: 1;">
                         <div class="card-category">Direção Financeira (CFO)</div>
-                        <h3 class="card-title">Capital Management & Reporting Consultant</h3>
-                        <div class="card-company">🏢 <strong>PwC Portugal</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                        <h3 class="card-title">Senior Controller | M&a Experience | Fluent English</h3>
+                        <div class="card-company">🏢 <strong>Michael Page Portugal</strong> • 📍 Lisboa • <span class="badge" style="background: #fee2e2; color: #b91c1c; font-weight: 700;">🔴 Expresso Emprego</span></div>
                     </div>
                     <div class="score-box" style="background-color: #f59e0b;">
-                        <span class="score-num">55%</span>
+                        <span class="score-num">65%</span>
                         <span class="score-label">Afinidade</span>
                     </div>
                 </div>
@@ -1509,20 +1509,20 @@
                 </div>
 
                 <div class="card-summary">
-                    <strong>Resumo Executivo:</strong> Oportunidade para Capital Management & Reporting Consultant na empresa PwC Portugal. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 5 dia(s).
+                    <strong>Resumo Executivo:</strong> Oportunidade para Senior Controller | M&a Experience | Fluent English na empresa Michael Page Portugal. Regime: Full-Time | Presencial (Lisboa). Foco na área de Direção Financeira (CFO). Anúncio publicado há 9 dia(s).
                 </div>
 
                 <div class="card-rationale">
-                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Gestão e liderança executiva.</em>
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Nível Executivo / Sénior (25+ anos).</em>
                 </div>
 
                 <div class="skills-row">
-                    
+                    <span class="skill-tag">Nível Executivo / Sénior (25+ anos)</span>
                 </div>
 
                 <div class="card-footer">
-                    <a href="https://pt.linkedin.com/jobs/view/capital-management-reporting-consultant-at-pwc-portugal-4297548221" target="_blank" rel="noopener noreferrer" class="btn-apply">
-                        Ver Oferta no LinkedIn Jobs &rarr;
+                    <a href="https://expressoemprego.pt/emprego/senior-controller---m-a-experience---fluent-englis/porto/2465651" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no Expresso Emprego &rarr;
                     </a>
                 </div>
             </div>
@@ -1562,6 +1562,46 @@
 
                 <div class="card-footer">
                     <a href="https://pt.linkedin.com/jobs/view/financial-control-officer-french-speaker-sg-at-natixis-in-portugal-4433970546" target="_blank" rel="noopener noreferrer" class="btn-apply">
+                        Ver Oferta no LinkedIn Jobs &rarr;
+                    </a>
+                </div>
+            </div>
+            
+
+            <div class="job-card" data-category="cfo" data-portal="linkedin" data-parttime="false" data-remote="false" data-banking="false" data-score="55.0" data-search="capital management & reporting consultant pwc portugal direção financeira (cfo) linkedin jobs ">
+                <div class="card-header">
+                    <div style="flex: 1;">
+                        <div class="card-category">Direção Financeira (CFO)</div>
+                        <h3 class="card-title">Capital Management & Reporting Consultant</h3>
+                        <div class="card-company">🏢 <strong>PwC Portugal</strong> • 📍 Lisboa, Lisboa, Portugal • <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span></div>
+                    </div>
+                    <div class="score-box" style="background-color: #f59e0b;">
+                        <span class="score-num">55%</span>
+                        <span class="score-label">Afinidade</span>
+                    </div>
+                </div>
+
+                <div class="badges-row">
+                    <span class="badge badge-full-time">💼 Full-Time</span>
+                    <span class="badge badge-location">📍 Lisboa</span>
+                    
+                    <span class="badge badge-date">📅 Há 9 dia(s) (07/09/2026)</span>
+                </div>
+
+                <div class="card-summary">
+                    <strong>Resumo Executivo:</strong> Oportunidade para Capital Management & Reporting Consultant na empresa PwC Portugal. Regime: Full-Time | Presencial (Lisboa, Lisboa, Portugal). Foco na área de Direção Financeira (CFO). Anúncio publicado há 5 dia(s).
+                </div>
+
+                <div class="card-rationale">
+                    💡 <em>Forte alinhamento com a sua experiência de 25+ anos no setor financeiro. Pontos chave identificados: Gestão e liderança executiva.</em>
+                </div>
+
+                <div class="skills-row">
+                    
+                </div>
+
+                <div class="card-footer">
+                    <a href="https://pt.linkedin.com/jobs/view/capital-management-reporting-consultant-at-pwc-portugal-4297548221" target="_blank" rel="noopener noreferrer" class="btn-apply">
                         Ver Oferta no LinkedIn Jobs &rarr;
                     </a>
                 </div>
@@ -1822,9 +1862,10 @@ async function pollAgentStatus() {
             if (btnIcon) btnIcon.textContent = '⏳';
         } else {
             if (isRunning) {
-                // Terminou a execução agora
+                // Terminou a execução agora - recarregar com cache-busting obrigatório no telemóvel
                 isRunning = false;
-                window.location.reload();
+                window.location.href = window.location.pathname + '?v=' + Date.now();
+                return;
             }
             if (dot) dot.className = 'status-dot';
             if (statusText) statusText.textContent = data.last_run ? ('Agente Operacional • Atualizado em ' + data.last_run) : 'Agente Operacional';
@@ -1849,7 +1890,17 @@ async function pollAgentStatus() {
 async function triggerRun() {
     const days = document.getElementById('daysSelect').value;
     const btnRun = document.getElementById('btnRun');
+    const btnText = document.getElementById('btnText');
+    const btnIcon = document.getElementById('btnIcon');
+    const statusText = document.getElementById('agentStatusText');
+    const dot = document.getElementById('agentDot');
+
     if (btnRun) btnRun.disabled = true;
+    if (btnText) btnText.textContent = 'A Iniciar...';
+    if (btnIcon) btnIcon.textContent = '⏳';
+    if (statusText) statusText.textContent = 'Agente a Iniciar Pesquisa nos Portais...';
+    if (dot) dot.className = 'status-dot pulsing';
+    isRunning = true;
 
     // Abrir consola para feedback imediato
     const consoleDrawer = document.getElementById('consoleDrawer');
@@ -1862,10 +1913,13 @@ async function triggerRun() {
             body: JSON.stringify({ days: parseInt(days), send_email: true })
         });
         const data = await res.json();
-        pollAgentStatus();
+        setTimeout(pollAgentStatus, 400);
     } catch (err) {
         alert('Erro ao comunicar com o agente: ' + err);
         if (btnRun) btnRun.disabled = false;
+        if (btnText) btnText.textContent = 'Atualizar Pesquisa';
+        if (btnIcon) btnIcon.textContent = '🚀';
+        isRunning = false;
     }
 }
 

@@ -1,9 +1,21 @@
 #!/usr/bin/env python3
 import os
 import sys
+import time
+
+# Forçar timezone local de Portugal (Europe/Lisbon)
+os.environ["TZ"] = "Europe/Lisbon"
+try:
+    time.tzset()
+except Exception:
+    pass
+
 import argparse
 from pathlib import Path
+from zoneinfo import ZoneInfo
 import yaml
+
+LISBON_TZ = ZoneInfo("Europe/Lisbon")
 
 from src.models import JobOffer
 from src.cv_parser import ATSCVParser

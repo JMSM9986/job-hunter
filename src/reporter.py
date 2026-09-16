@@ -1,10 +1,13 @@
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from typing import List
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from .models import JobOffer, CVProfile
+
+LISBON_TZ = ZoneInfo("Europe/Lisbon")
 
 class JobReporter:
     """Gera relatórios em Markdown, HTML interativo e na consola terminal."""
@@ -63,7 +66,7 @@ class JobReporter:
     def generate_markdown(self, profile: CVProfile, offers: List[JobOffer], filename: str = "relatorio_vagas.md") -> str:
         """Gera relatório completo em Markdown estruturado."""
         filepath = self.output_dir / filename
-        now_str = datetime.now().strftime("%d/%m/%Y às %H:%M")
+        now_str = datetime.now(LISBON_TZ).strftime("%d/%m/%Y às %H:%M")
         
         md = []
         md.append(f"# Relatório de Oportunidades de Emprego — Portugal")
@@ -139,7 +142,7 @@ class JobReporter:
     def generate_html(self, profile: CVProfile, offers: List[JobOffer], filename: str = "relatorio_vagas.html") -> str:
         """Gera dashboard web interativo em HTML moderno para abrir no browser e em qualquer dispositivo móvel."""
         filepath = self.output_dir / filename
-        now_str = datetime.now().strftime("%d/%m/%Y às %H:%M")
+        now_str = datetime.now(LISBON_TZ).strftime("%d/%m/%Y às %H:%M")
 
         # Contagens para filtros
         linkedin_count = sum(1 for o in offers if 'linkedin' in o.source_portal.lower())
@@ -861,9 +864,10 @@ async function pollAgentStatus() {{
             if (btnIcon) btnIcon.textContent = '⏳';
         }} else {{
             if (isRunning) {{
-                // Terminou a execução agora
+                // Terminou a execução agora - recarregar com cache-busting obrigatório no telemóvel
                 isRunning = false;
-                window.location.reload();
+                window.location.href = window.location.pathname + '?v=' + Date.now();
+                return;
             }}
             if (dot) dot.className = 'status-dot';
             if (statusText) statusText.textContent = data.last_run ? ('Agente Operacional • Atualizado em ' + data.last_run) : 'Agente Operacional';
@@ -888,7 +892,17 @@ async function pollAgentStatus() {{
 async function triggerRun() {{
     const days = document.getElementById('daysSelect').value;
     const btnRun = document.getElementById('btnRun');
+    const btnText = document.getElementById('btnText');
+    const btnIcon = document.getElementById('btnIcon');
+    const statusText = document.getElementById('agentStatusText');
+    const dot = document.getElementById('agentDot');
+
     if (btnRun) btnRun.disabled = true;
+    if (btnText) btnText.textContent = 'A Iniciar...';
+    if (btnIcon) btnIcon.textContent = '⏳';
+    if (statusText) statusText.textContent = 'Agente a Iniciar Pesquisa nos Portais...';
+    if (dot) dot.className = 'status-dot pulsing';
+    isRunning = true;
 
     // Abrir consola para feedback imediato
     const consoleDrawer = document.getElementById('consoleDrawer');
@@ -901,10 +915,13 @@ async function triggerRun() {{
             body: JSON.stringify({{ days: parseInt(days), send_email: true }})
         }});
         const data = await res.json();
-        pollAgentStatus();
+        setTimeout(pollAgentStatus, 400);
     }} catch (err) {{
         alert('Erro ao comunicar com o agente: ' + err);
         if (btnRun) btnRun.disabled = false;
+        if (btnText) btnText.textContent = 'Atualizar Pesquisa';
+        if (btnIcon) btnIcon.textContent = '🚀';
+        isRunning = false;
     }}
 }}
 
