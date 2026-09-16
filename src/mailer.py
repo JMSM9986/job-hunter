@@ -332,16 +332,21 @@ class JobEmailNotifier:
         Path("email_digest_latest.html").write_text(html_body, encoding="utf-8")
         Path("email_digest_latest.txt").write_text(text_body, encoding="utf-8")
 
-        # 1. Se credenciais SMTP estiverem presentes, usa SMTP
+        # 1. Se credenciais SMTP estiverem presentes, usa SMTP (necessário para Cloud / Render)
         if self.smtp_password:
-            console.print("📧 A tentar envio via servidor SMTP...")
+            console.print("📧 A tentar envio via servidor SMTP seguro...")
             if self.send_via_smtp(subject, text_body, html_body, html_report_path):
                 return True
 
-        # 2. Utilizar Apple Mail nativo (macOS)
-        console.print("📧 A enviar notificação via Apple Mail nativo (macOS)...")
-        if self.send_via_apple_mail(subject, text_body, html_report_path):
-            return True
+        # 2. Em macOS (ambiente local), utilizar Apple Mail nativo
+        import sys
+        if sys.platform == "darwin":
+            console.print("📧 A enviar notificação via Apple Mail nativo (macOS)...")
+            if self.send_via_apple_mail(subject, text_body, html_report_path):
+                return True
+        else:
+            console.print("[yellow]ℹ️ Envio de e-mail na Cloud: Requer configuração de 'SMTP_PASSWORD' nas variáveis de ambiente do Render.[/yellow]")
+            return False
 
         console.print("[bold red]❌ Não foi possível enviar o e-mail automaticamente por nenhum dos métodos.[/bold red]")
         return False

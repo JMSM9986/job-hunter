@@ -100,8 +100,10 @@ def run_agent_pipeline(days: int = 15, send_email: bool = True, location: str = 
     add_log(f"🚀 Iniciando pesquisa: Janela={days} dias, Localização={location}, E-mail={send_email}")
 
     venv_python = BASE_DIR / ".venv" / "bin" / "python"
+    python_bin = str(venv_python) if venv_python.exists() else sys.executable
     cmd = [
-        str(venv_python) if venv_python.exists() else sys.executable,
+        python_bin,
+        "-u",
         str(BASE_DIR / "main.py"),
         "--days", str(days),
         "--location", location
@@ -111,6 +113,9 @@ def run_agent_pipeline(days: int = 15, send_email: bool = True, location: str = 
     else:
         cmd.append("--no-email")
 
+    sub_env = os.environ.copy()
+    sub_env["PYTHONUNBUFFERED"] = "1"
+
     try:
         process = subprocess.Popen(
             cmd,
@@ -118,7 +123,8 @@ def run_agent_pipeline(days: int = 15, send_email: bool = True, location: str = 
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
-            bufsize=1
+            bufsize=1,
+            env=sub_env
         )
 
         for line in iter(process.stdout.readline, ''):
@@ -127,7 +133,12 @@ def run_agent_pipeline(days: int = 15, send_email: bool = True, location: str = 
                 add_log(clean_line)
 
         process.stdout.close()
-        return_code = process.wait()
+        try:
+            return_code = process.wait(timeout=150)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            return_code = -1
+            add_log("⏱️ Limite de tempo excedido (150s). Processo interrompido com segurança.")
 
         update_stats_from_reports()
 
@@ -217,7 +228,6 @@ class AgentWebHandler(BaseHTTPRequestHandler):
                 self._send_bytes(b"<h1>Agente de Emprego ativo. A carregar dados...</h1>", status=200)
 
         elif parsed_path == '/api/status':
-            update_stats_from_reports()
             pub_url = ""
             pub_file = BASE_DIR / "public_url.txt"
             if pub_file.exists():

@@ -350,9 +350,9 @@ class JobValidator:
         if not pre_filtered:
             return []
 
-        # 2. Verificação concorrente de links em paralelo (15 threads em simultâneo: demora ~2 segundos no total)
+        # 2. Verificação concorrente de links em paralelo (4 workers controlados para não saturar CPU na cloud)
         valid = []
-        with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
             future_to_offer = {executor.submit(self.is_active_online, o): o for o in pre_filtered}
             for future in concurrent.futures.as_completed(future_to_offer):
                 offer = future_to_offer[future]

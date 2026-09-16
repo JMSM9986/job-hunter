@@ -39,7 +39,7 @@ class ExpressoEmpregoScraper(BaseScraper):
                 return None
             return None
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
             html_results = executor.map(_fetch, urls_to_fetch)
 
         for html_content in html_results:

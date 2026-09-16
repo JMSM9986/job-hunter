@@ -40,10 +40,10 @@ class NetEmpregosScraper(BaseScraper):
             encoded_params = urllib.parse.urlencode(q_params)
             urls_to_fetch.append(f"{self.base_url}/pesquisa-empregos.asp?{encoded_params}")
 
-        # 2. Descarregamento concorrente em paralelo (8 workers)
+        # 2. Descarregamento concorrente em paralelo (2 workers)
         def _fetch(url):
             try:
-                resp = self.client.get(url)
+                resp = self.client.get(url, timeout=4.0)
                 if resp.status_code == 200:
                     try:
                         return resp.content.decode("iso-8859-1")
@@ -53,7 +53,7 @@ class NetEmpregosScraper(BaseScraper):
                 return None
             return None
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
             html_results = executor.map(_fetch, urls_to_fetch)
 
         # 3. Extração dos anúncios de cada resposta

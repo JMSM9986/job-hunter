@@ -33,16 +33,23 @@ class PortalAggregator:
 
     def search_all(self, keywords: List[str], max_days: int = 15, location: str = "Lisboa") -> List[JobOffer]:
         import concurrent.futures
+        from rich.console import Console
+        console = Console()
         all_offers: List[JobOffer] = []
         seen_urls = set()
 
         def _search_scraper(scraper):
             try:
-                return scraper.search(keywords=keywords, max_days=max_days, location=location)
+                console.print(f"  🔎 A consultar portal: [cyan]{scraper.name}[/cyan]...")
+                offers = scraper.search(keywords=keywords, max_days=max_days, location=location)
+                console.print(f"  ✓ Portal [cyan]{scraper.name}[/cyan]: {len(offers)} ofertas recolhidas.")
+                return offers
             except Exception as e:
+                console.print(f"  ⚠️ Aviso no portal [yellow]{scraper.name}[/yellow]: {e}")
                 return []
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=len(self.scrapers) or 1) as executor:
+        # Execução controlada com 2 workers simultâneos para não sobrecarregar recursos
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
             results_list = executor.map(_search_scraper, self.scrapers)
             for results in results_list:
                 for offer in results:

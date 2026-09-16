@@ -67,14 +67,14 @@ class LinkedInPublicScraper(BaseScraper):
 
         def _fetch(url):
             try:
-                resp = self.client.get(url, timeout=6.0)
+                resp = self.client.get(url, timeout=4.0)
                 if resp.status_code == 200:
                     return resp.text
             except Exception:
                 return None
             return None
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
             html_results = executor.map(_fetch, urls_to_fetch)
 
         for html_content in html_results:
