@@ -163,12 +163,24 @@ def run_agent_pipeline(days: int = 15, send_email: bool = True, location: str = 
             app_state["is_running"] = False
 
 class AgentWebHandler(BaseHTTPRequestHandler):
+    protocol_version = "HTTP/1.1"
+    timeout = 10
+
+    def setup(self):
+        super().setup()
+        try:
+            self.request.settimeout(10.0)
+        except Exception:
+            pass
+        self.close_connection = True
+
     def log_message(self, format, *args):
         # Silenciar logs verbosos na consola
         pass
 
     def _send_bytes(self, data: bytes, content_type: str = "text/html; charset=utf-8", status: int = 200):
         """Envia resposta com suporte a compressão GZIP se suportada pelo cliente."""
+        self.close_connection = True
         accept_encoding = self.headers.get("Accept-Encoding", "")
         if "gzip" in accept_encoding and len(data) > 300:
             import gzip
@@ -288,10 +300,14 @@ class AgentWebHandler(BaseHTTPRequestHandler):
             self.end_headers()
 
 def main():
+    import socket
+    socket.setdefaulttimeout(15.0)
+
     # Iniciar agendador diário autónomo em background
     scheduler_thread = threading.Thread(target=daily_scheduler_worker, daemon=True)
     scheduler_thread.start()
 
+    ThreadingHTTPServer.daemon_threads = True
     server = ThreadingHTTPServer(('0.0.0.0', PORT), AgentWebHandler)
     print(f"============================================================")
     print(f"🌐 Servidor Web Nativo do Agente de Emprego Ativo!")
