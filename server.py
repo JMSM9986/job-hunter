@@ -24,7 +24,7 @@ app_state = {
     "logs": [f"[{datetime.now().strftime('%H:%M:%S')}] Servidor de controlo web iniciado com sucesso."],
     "exit_code": 0
 }
-state_lock = threading.Lock()
+state_lock = threading.RLock()
 
 def daily_scheduler_worker():
     """Agendador autónomo que dispara a pesquisa diária às 09:00 (hora local)."""
@@ -142,17 +142,20 @@ def run_agent_pipeline(days: int = 15, send_email: bool = True, location: str = 
 
         update_stats_from_reports()
 
+        now_str = datetime.now().strftime("%d/%m/%Y às %H:%M")
         with state_lock:
             app_state["is_running"] = False
             app_state["exit_code"] = return_code
-            now_str = datetime.now().strftime("%d/%m/%Y às %H:%M")
             app_state["last_run"] = now_str
             if return_code == 0:
                 app_state["last_status"] = f"Concluído com sucesso ({now_str})"
-                add_log("✨ Pesquisa e processamento concluídos com sucesso!")
             else:
                 app_state["last_status"] = f"Terminou com avisos/código {return_code}"
-                add_log(f"⚠️ Processo concluído com código: {return_code}")
+
+        if return_code == 0:
+            add_log("✨ Pesquisa e processamento concluídos com sucesso!")
+        else:
+            add_log(f"⚠️ Processo concluído com código: {return_code}")
 
     except Exception as e:
         with state_lock:
