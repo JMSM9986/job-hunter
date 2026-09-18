@@ -19,7 +19,9 @@ class HaysScraper(BaseScraper):
 
         categories = [
             "/emprego/banca",
-            "/emprego/consultoria"
+            "/emprego/consultoria",
+            "/emprego/contabilidade-financas",
+            "/emprego/auditoria"
         ]
 
         for cat in categories:

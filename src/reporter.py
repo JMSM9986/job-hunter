@@ -147,7 +147,9 @@ class JobReporter:
         # Contagens para filtros
         linkedin_count = sum(1 for o in offers if 'linkedin' in o.source_portal.lower())
         expresso_count = sum(1 for o in offers if 'expresso' in o.source_portal.lower())
-        netemp_count = sum(1 for o in offers if 'net-empregos' in o.source_portal.lower())
+        mp_count = sum(1 for o in offers if 'michael' in o.source_portal.lower())
+        hays_count = sum(1 for o in offers if 'hays' in o.source_portal.lower())
+        netemp_count = sum(1 for o in offers if 'net-empregos' in o.source_portal.lower() or 'netempregos' in o.source_portal.lower())
         cfo_count = sum(1 for o in offers if 'direção financeira' in (o.category_fit or '').lower() or 'cfo' in (o.category_fit or '').lower())
         admin_count = sum(1 for o in offers if 'administração' in (o.category_fit or '').lower() or 'assessoria' in (o.category_fit or '').lower())
         consult_count = sum(1 for o in offers if 'consultoria' in (o.category_fit or '').lower())
@@ -157,7 +159,7 @@ class JobReporter:
         rem_count = sum(1 for o in offers if o.is_remote)
 
         is_banking_fn = lambda o: any(k in (o.company + " " + o.title + " " + (o.description or "") + " " + (o.summary or "")).lower() for k in [
-            "banco", "banking", "banca", "santander", "bnp paribas", "natixis", "novo banco", "bpi", "millennium", "cgd", "credit risk", "capital market", "securities services"
+            "banco", "banking", "banca", "santander", "bnp paribas", "natixis", "novo banco", "bpi", "millennium", "cgd", "credit risk", "capital market", "securities services", "michael page", "page executive", "hays"
         ])
         banking_count = sum(1 for o in offers if is_banking_fn(o))
 
@@ -171,15 +173,24 @@ class JobReporter:
             banking_badge = '<span class="badge" style="background: #fef9c3; color: #854d0e; font-weight: 700;">🏦 Setor Bancário</span>' if is_banking else ''
 
             portal_lower = o.source_portal.lower()
-            if 'linkedin' in portal_lower:
+            if 'michael' in portal_lower:
+                portal_badge = '<span class="badge" style="background: #fdf2f8; color: #be185d; font-weight: 700;">🟣 Michael Page</span>'
+                portal_code = 'michaelpage'
+            elif 'hays' in portal_lower:
+                portal_badge = '<span class="badge" style="background: #ecfdf5; color: #047857; font-weight: 700;">🔶 Hays Portugal</span>'
+                portal_code = 'hays'
+            elif 'linkedin' in portal_lower:
                 portal_badge = '<span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">🔵 LinkedIn Jobs</span>'
                 portal_code = 'linkedin'
             elif 'expresso' in portal_lower:
                 portal_badge = '<span class="badge" style="background: #fee2e2; color: #b91c1c; font-weight: 700;">🔴 Expresso Emprego</span>'
                 portal_code = 'expresso'
-            else:
+            elif 'net-empregos' in portal_lower or 'netempregos' in portal_lower:
                 portal_badge = '<span class="badge" style="background: #dcfce7; color: #15803d; font-weight: 700;">🟢 Net-Empregos</span>'
                 portal_code = 'netempregos'
+            else:
+                portal_badge = f'<span class="badge" style="background: #f1f5f9; color: #475569; font-weight: 700;">🌐 {o.source_portal}</span>'
+                portal_code = 'other'
 
             cat_lower = (o.category_fit or '').lower()
             if 'direção financeira' in cat_lower or 'cfo' in cat_lower:
@@ -664,8 +675,8 @@ class JobReporter:
             <div class="desc">Ofertas em Part-Time</div>
         </div>
         <div class="stat-card">
-            <div class="val" style="color: #0369a1;" id="kpiPortals">3 Portais</div>
-            <div class="desc">LinkedIn, Expresso, Net-Emp.</div>
+            <div class="val" style="color: #0369a1;" id="kpiPortals">5 Portais</div>
+            <div class="desc">Michael Page, Hays, LinkedIn, Expresso, Net-Emp.</div>
         </div>
     </div>
 
@@ -756,6 +767,8 @@ class JobReporter:
     <div class="filter-bar">
         <span style="font-weight: 700; font-size: 0.88rem; margin-right: 4px; color: var(--text-muted);">Portais:</span>
         <button class="filter-btn active" data-filter-type="portal" data-filter-val="all" onclick="setFilter(this)">Todas <span class="count">{len(offers)}</span></button>
+        <button class="filter-btn" data-filter-type="portal" data-filter-val="michaelpage" onclick="setFilter(this)">🟣 Michael Page <span class="count">{mp_count}</span></button>
+        <button class="filter-btn" data-filter-type="portal" data-filter-val="hays" onclick="setFilter(this)">🔶 Hays <span class="count">{hays_count}</span></button>
         <button class="filter-btn" data-filter-type="portal" data-filter-val="linkedin" onclick="setFilter(this)">🔵 LinkedIn <span class="count">{linkedin_count}</span></button>
         <button class="filter-btn" data-filter-type="portal" data-filter-val="expresso" onclick="setFilter(this)">🔴 Expresso Emprego <span class="count">{expresso_count}</span></button>
         <button class="filter-btn" data-filter-type="portal" data-filter-val="netempregos" onclick="setFilter(this)">🟢 Net-Empregos <span class="count">{netemp_count}</span></button>

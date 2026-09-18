@@ -18,55 +18,65 @@ class MichaelPageScraper(BaseScraper):
         seen_urls = set()
 
         categories = [
-            "/jobs/consultoria-gest%C3%A3o/lisboa",
-            "/jobs/banca-servi%C3%A7os-financeiros/lisboa"
+            "/jobs/banking-financial-services/grande-lisboa",
+            "/jobs/consultancy-strategy-change/grande-lisboa",
+            "/jobs/accounting/grande-lisboa"
         ]
 
         for cat in categories:
             url = f"{self.base_url}{cat}"
             try:
-                resp = self.client.get(url, timeout=7.0)
+                resp = self.client.get(url, timeout=8.0)
                 if resp.status_code != 200:
                     continue
 
                 soup = BeautifulSoup(resp.text, "html.parser")
-                links = soup.select('a[href*="/job-detail/"]')
+                tiles = soup.select(".job-tile")
 
-                for a in links:
-                    href = a.get("href")
-                    if not href:
+                for t in tiles:
+                    title_a = t.select_one(".job-title a, a[href*='/job-detail/']")
+                    if not title_a or not title_a.get("href"):
                         continue
+
+                    href = title_a["href"]
                     full_url = urllib.parse.urljoin(self.base_url, href)
                     if full_url in seen_urls:
                         continue
+                    seen_urls.add(full_url)
 
-                    title = a.get_text(strip=True)
+                    title = title_a.get_text(strip=True)
                     if not title or title.lower() in ["detalhes da oferta", "ver oferta", "candidatar"]:
                         continue
 
-                    seen_urls.add(full_url)
-                    
+                    # Extrair resumo do anúncio
+                    sum_el = t.select_one(".job-summary p, .job_advert__job-summary-text p")
+                    summary_text = sum_el.get_text(" ", strip=True) if sum_el else ""
+
+                    # Extrair localização
+                    loc_el = t.select_one(".job-location")
+                    job_loc = loc_el.get_text(strip=True) if loc_el else location
+
                     # Assume publicado recente (listagem ativa Michael Page)
                     pub_date = now - timedelta(days=2)
                     days_ago = 2
 
-                    title_lower = title.lower()
-                    is_part_time = "part-time" in title_lower or "part time" in title_lower
-                    is_remote = "remoto" in title_lower or "remote" in title_lower or "híbrido" in title_lower
+                    card_text = f"{title} {summary_text}".lower()
+                    is_part_time = "part-time" in card_text or "part time" in card_text or "parcial" in card_text
+                    is_remote = "remoto" in card_text or "remote" in card_text or "híbrido" in card_text or "hybrid" in card_text
 
                     offer_id = f"mp_{re.sub(r'[^a-zA-Z0-9]', '', full_url)[-20:]}"
                     offers.append(JobOffer(
                         id=offer_id,
                         title=title,
-                        company="Michael Page (Cliente Confidencial)",
-                        location=location if not is_remote else f"{location} / Remoto",
+                        company="Michael Page (Mandato Executivo)",
+                        location=job_loc,
                         is_remote=is_remote,
                         is_part_time=is_part_time,
                         publication_date=pub_date,
                         published_days_ago=days_ago,
                         url=full_url,
                         source_portal=self.name,
-                        description=f"Oportunidade de gestão executiva Michael Page: {title} em Lisboa"
+                        description=summary_text or f"Oportunidade de gestão executiva Michael Page: {title} em Lisboa"
                     ))
             except Exception:
                 continue

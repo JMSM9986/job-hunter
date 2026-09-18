@@ -58,7 +58,7 @@ portals:
   hays:
     enabled: true
   michaelpage:
-    enabled: false
+    enabled: true
   sapoemprego:
     enabled: false
   itjobs:

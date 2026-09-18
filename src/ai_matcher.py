@@ -40,53 +40,66 @@ class AIMatcher:
         return "Direção Financeira (CFO)"
 
     def _heuristic_match_and_summarize(self, offer: JobOffer) -> Tuple[float, str, str, List[str], str]:
-        """Análise semântica e contextual avançada baseada exclusivamente nos 5 cargos pretendidos."""
-        full_text = f"{offer.title} {offer.description}".lower()
+        """Análise semântica e contextual avançada: prioridade absoluta a Direção Financeira, Banca e Consultoria."""
+        full_text = f"{offer.title} {offer.company} {offer.description}".lower()
         
-        score = 55.0
+        score = 50.0
         matched_skills = []
         category = self._determine_category(full_text)
         
-        # 1. Alinhamento com Cargos Alvo e Títulos Regulados
-        if any(w in full_text for w in ["economista", "economia", "ciências económicas", "consultor económico", "consultoria económica", "valuation"]):
-            score += 20.0
-            matched_skills.append("Economista Conselheiro (Ordem dos Economistas) & Consultoria")
-            
-        if any(w in full_text for w in ["diretor financeiro", "cfo", "direção financeira", "finance director", "head of finance", "financial controller", "controller financeiro", "fp&a", "finance manager"]):
+        # 1. Bónus de Prestígio e Setor Bancário / Mercados Financeiros / Consultoria de Topo (+15%)
+        is_banking_or_top = any(w in full_text for w in [
+            "banco", "banking", "santander", "bnp paribas", "natixis", "novo banco", "bpi",
+            "millennium", "cgd", "michael page", "page executive", "hays", "deloitte", "pwc",
+            "kpmg", "ernst & young", "ey", "cushman", "robert walters", "credit risk", "risco de crédito",
+            "financial crime", "compliance", "portfolio management", "gestão de portefólio",
+            "m&a", "mergers", "corporate finance", "capital markets", "securitisation", "valuation"
+        ])
+        if is_banking_or_top:
+            score += 15.0
+            matched_skills.append("Banca, Mercados de Capitais e Instituições de Referência")
+
+        # 2. Alinhamento com Cargos Alvo
+        # A) Direção Financeira, CFO e Controlo de Gestão Executivo (+25%)
+        if any(w in full_text for w in ["diretor financeiro", "diretora financeira", "cfo", "direção financeira", "finance director", "head of finance", "financial controller", "controller financeiro", "fp&a", "finance manager", "corporate finance"]):
+            score += 25.0
+            matched_skills.append("Liderança e Direção Financeira Executiva (CFO / Controller)")
+
+        # B) Risco de Crédito, Compliance e Financial Crime (+22%)
+        elif any(w in full_text for w in ["risco de crédito", "credit risk", "financial crime", "compliance", "portefólio", "portfolio", "auditor"]):
             score += 22.0
-            matched_skills.append("Liderança e Direção Financeira Executiva (CFO)")
-            
-        if any(w in full_text for w in ["assessor", "administração", "board", "conselho", "governance"]):
-            score += 20.0
-            matched_skills.append("Assessoria ao Conselho de Administração & Gestão Estratégica")
-            
-        if any(w in full_text for w in ["professor", "docente", "formador", "explicador", "ccp"]):
-            score += 20.0
-            matched_skills.append("Docência / Explicações em Economia e Finanças com CCP")
-            
-        if any(w in full_text for w in ["crédito", "risco", "compliance", "portefólio"]):
-            score += 10.0
-            matched_skills.append("25+ anos de Carreira e Gestão de Portefólio no Setor Financeiro")
+            matched_skills.append("Financial Crime, Compliance e Decisão de Risco de Crédito (25+ anos)")
 
-        # Deteção refinada de Part-Time / Prestação de Serviços
-        if any(w in full_text for w in ["part-time", "part time", "parcial", "avença", "prestação de serviços", "prestacao de servicos", "explicador", "explicadores", "horas", "pós-laboral", "pos-laboral"]):
+        # C) Consultoria Económica e Assessoria de Administração (+20%)
+        elif any(w in full_text for w in ["economista", "economia", "consultor económico", "consultoria económica", "assessor", "administração", "board", "governance"]):
+            score += 20.0
+            matched_skills.append("Economista Conselheiro & Assessoria ao Conselho de Administração")
+
+        # D) Docência e Explicações (+12%, ponderado para não ultrapassar cargos executivos)
+        elif any(w in full_text for w in ["professor", "docente", "formador", "explicador", "ccp"]):
+            score += 12.0
+            matched_skills.append("Docência / Formação em Economia e Finanças (CCP)")
+
+        # 3. Deteção de Part-Time / Prestação de Serviços
+        if any(w in full_text for w in ["part-time", "part time", "parcial", "avença", "prestação de serviços", "prestacao de servicos", "explicador", "explicadores", "pós-laboral"]):
             offer.is_part_time = True
+            score += 5.0
 
-        # Bónus para Part-Time se a vaga for part-time (conforme solicitado)
-        if offer.is_part_time:
-            score += 8.0
-
-        # Bónus de Senioridade Executiva
-        if any(w in full_text for w in ["diretor", "diretora", "head of", "cfo", "chief", "responsável", "coordenador", "sénior", "senior", "assessor", "consultor sénior"]):
+        # 4. Bónus de Senioridade Executiva (+10%)
+        if any(w in full_text for w in ["diretor", "diretora", "head of", "cfo", "chief", "responsável", "coordenador", "sénior", "senior", "lead", "manager", "assessor"]):
             score += 10.0
-            matched_skills.append("Nível Executivo / Sénior (25+ anos)")
+            matched_skills.append("Nível Executivo / Sénior (25+ anos de experiência)")
 
-        # Penalização drástica para posições de nível inicial inadequadas a perfil executivo
+        # 5. Penalização drástica para posições juniores / estágios
         if any(w in full_text for w in ["júnior", "junior", "estágio", "estagio", "trainee", "recém-licenciado"]):
-            score -= 50.0
+            score -= 45.0
 
-        # Normalização do score (máx 98%, mín 20%)
-        score = min(98.0, max(20.0, score))
+        # 6. Limite diferenciado: Explicações escolares genéricas não ultrapassam 76% para não afundar vagas de topo
+        if category == "Explicador de Economia e Finanças":
+            score = min(76.0, score)
+
+        # Normalização do score (mínimo 25%, máximo 98%)
+        score = min(98.0, max(25.0, score))
         
         # Resumo executivo da vaga
         regime_str = "Part-Time" if offer.is_part_time else "Full-Time"

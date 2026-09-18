@@ -236,22 +236,31 @@ class AgentWebHandler(BaseHTTPRequestHandler):
             self.wfile.flush()
 
     def do_HEAD(self):
+        self.close_connection = True
         parsed_path = self.path.split('?')[0]
         if parsed_path in ['/', '/index.html', '/dashboard', '/digest', '/email', '/resumo', '/resumo.txt']:
             self.send_response(200)
             self.send_header('Content-Type', 'text/html; charset=utf-8')
             self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+            self.send_header('Connection', 'close')
+            self.send_header('Content-Length', '0')
             self.end_headers()
         elif parsed_path == '/api/status':
             self.send_response(200)
             self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.send_header('Connection', 'close')
+            self.send_header('Content-Length', '0')
             self.end_headers()
         elif parsed_path == '/favicon.ico':
             self.send_response(200)
             self.send_header('Content-Type', 'image/svg+xml')
+            self.send_header('Connection', 'close')
+            self.send_header('Content-Length', '0')
             self.end_headers()
         else:
             self.send_response(404)
+            self.send_header('Connection', 'close')
+            self.send_header('Content-Length', '0')
             self.end_headers()
 
     def do_GET(self):
